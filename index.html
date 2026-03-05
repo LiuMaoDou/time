@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>任务时间记录系统 - Cloud Pro (Supabase 最终版)</title>
-    
+
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,14 +16,14 @@
         :root {
             /* === 浅色模式 === */
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            
+
             --primary-color: #667eea;
             --secondary-color: #764ba2;
             --success-color: #48bb78;
             --danger-color: #f56565;
             --warning-color: #ed8936;
-            --plan-color: #4a90e2; 
-            
+            --plan-color: #4a90e2;
+
             --text-main: #2d3748;
             --text-sub: #718096;
             --border-color: #e2e8f0;
@@ -33,13 +34,13 @@
             --bg-input: #ffffff;
             --bg-hover: #f7fafc;
             --bg-sub-area: #fafafa;
-            
+
             /* 1. 今日结束 (红色系 - 保持不变) */
             --btn-finish-bg: #fef2f2;
             --btn-finish-text: #dc2626;
             --btn-finish-border: #fecaca;
             --btn-finish-hover: #fee2e2;
-            
+
             /* 2. 今日复盘 (紫色系 - 保持不变) */
             --btn-review-bg: #f3ebff;
             --btn-review-text: #764ba2;
@@ -86,20 +87,20 @@
 
         /* === 深色模式 === */
         [data-theme="dark"] {
-            --primary-gradient: #1A202C; 
-            
-            --bg-card: #283240; 
-            --bg-container: rgba(0, 0, 0, 0.2); 
+            --primary-gradient: #1A202C;
 
-            --bg-section: #1D2430; 
-            --bg-input: #1D2430; 
+            --bg-card: #283240;
+            --bg-container: rgba(0, 0, 0, 0.2);
+
+            --bg-section: #1D2430;
+            --bg-input: #1D2430;
             --bg-hover: #374151;
             --bg-sub-area: #1D2430;
-            
-            --text-main: #F7FAFC; 
-            --text-sub: #A0AEC0; 
-            
-            --border-color: #3F4A5E; 
+
+            --text-main: #F7FAFC;
+            --text-sub: #A0AEC0;
+
+            --border-color: #3F4A5E;
 
             --btn-finish-bg: rgba(220, 38, 38, 0.15);
             --btn-finish-text: #FCA5A5;
@@ -110,7 +111,7 @@
             --btn-review-text: #D6BCFA;
             --btn-review-border: #553C9A;
             --btn-review-hover: rgba(118, 75, 162, 0.25);
-            
+
             --btn-fitness-bg: rgba(56, 178, 172, 0.15);
             --btn-fitness-text: #81e6d9;
             --btn-fitness-border: #285e61;
@@ -133,7 +134,7 @@
 
             --checkbox-bg: #1D2430;
             --checkbox-border: #718096;
-            
+
             --btn-move-bg: rgba(255, 255, 255, 0.08);
             --btn-move-text: #E2E8F0;
             --btn-move-hover-bg: #4299E1;
@@ -147,7 +148,14 @@
             --shadow-md: 0 6px 12px -1px rgba(0, 0, 0, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
         body {
             font-family: 'Ubuntu', 'Microsoft YaHei', '微软雅黑', sans-serif;
             background: var(--primary-gradient);
@@ -157,20 +165,33 @@
             line-height: 1.5;
         }
 
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
 
         .container {
-            max-width: 1600px; 
+            max-width: 1600px;
             margin: 0 auto;
             background: var(--bg-container);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             padding: 40px;
-            border: 1px solid var(--border-color); 
+            border: 1px solid var(--border-color);
         }
 
         h1 {
@@ -182,8 +203,9 @@
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         .title-icon {
             width: 24px;
             height: 24px;
@@ -192,21 +214,46 @@
             vertical-align: -4px;
             -webkit-text-fill-color: currentColor;
         }
+
         [data-theme="dark"] h1 {
             background: none;
-            -webkit-text-fill-color: #F7FAFC; 
+            -webkit-text-fill-color: #F7FAFC;
             color: #F7FAFC;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         /* === 主布局区域 === */
         /* 修复：统一四个区域的宽度，使视觉更加平衡 */
         /* 调整：将今日足迹从 flex: 1.2 改为 flex: 1，使四个区域等宽 */
-        .main-layout { display: flex; gap: 20px; }
-        .left-section { flex: 1; min-width: 300px; } /* 今日足迹 - 统一为等宽 */
-        .plan-section-container { flex: 1; min-width: 280px; } /* 今日规划 */
-        .middle-section { flex: 1; min-width: 280px; } /* 待办清单 */
-        .right-section { flex: 1; min-width: 280px; } /* 灵感洞察 */
+        .main-layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        .left-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* 今日足迹 - 统一为等宽 */
+        .plan-section-container {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* 今日规划 */
+        .middle-section {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* 待办清单 */
+        .right-section {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* 灵感洞察 */
 
         .file-controls {
             display: flex;
@@ -221,9 +268,12 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .file-controls input[type="file"] { display: none; }
+        .file-controls input[type="file"] {
+            display: none;
+        }
 
-        .file-controls label, .file-controls button {
+        .file-controls label,
+        .file-controls button {
             padding: 10px 20px;
             border-radius: var(--radius-sm);
             cursor: pointer;
@@ -234,7 +284,7 @@
             align-items: center;
             justify-content: center;
             border: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* 通用：Lucide 风格图标样式 */
@@ -250,8 +300,16 @@
             vertical-align: middle;
             flex-shrink: 0;
         }
-        .icon-lucide-sm { width: 14px; height: 14px; }
-        .icon-lucide-lg { width: 20px; height: 20px; }
+
+        .icon-lucide-sm {
+            width: 14px;
+            height: 14px;
+        }
+
+        .icon-lucide-lg {
+            width: 20px;
+            height: 20px;
+        }
 
         /* 1. 主题切换按钮样式 (图标版) */
         /* 优化：使用 Lucide 风格 sun/moon 图标，替代 emoji，提升一致性 */
@@ -264,16 +322,18 @@
             margin-right: 5px;
             min-width: 44px;
         }
+
         .btn-theme .btn-icon {
             width: 20px;
             height: 20px;
             display: block;
             flex-shrink: 0;
         }
+
         .btn-theme:hover {
             background: var(--btn-theme-hover);
             transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         /* 2. 数据操作按钮样式 (仿今日结束风格) */
@@ -287,12 +347,14 @@
             box-shadow: 0 2px 4px rgba(66, 153, 225, 0.15);
             gap: 6px;
         }
+
         .btn-data .btn-icon {
             width: 16px;
             height: 16px;
             flex-shrink: 0;
             display: block;
         }
+
         .btn-data:hover {
             background: var(--btn-data-hover);
             transform: translateY(-1px);
@@ -306,6 +368,7 @@
             box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
             gap: 6px;
         }
+
         .btn-ai:hover {
             transform: translateY(-1px);
             box-shadow: 0 5px 10px rgba(99, 102, 241, 0.35);
@@ -314,11 +377,12 @@
 
         /* 3. 今日复盘按钮 */
         .btn-daily-review {
-            background: var(--btn-review-bg); 
-            color: var(--btn-review-text); 
-            border: 1px solid var(--btn-review-border); 
+            background: var(--btn-review-bg);
+            color: var(--btn-review-text);
+            border: 1px solid var(--btn-review-border);
             box-shadow: 0 2px 4px rgba(118, 75, 162, 0.15);
         }
+
         .btn-daily-review:hover {
             background: var(--btn-review-hover);
             transform: translateY(-1px);
@@ -327,12 +391,14 @@
 
         /* 4. 以终为始按钮 */
         .btn-fitness {
-            background: var(--btn-fitness-bg); 
-            color: var(--btn-fitness-text); 
-            border: 1px solid var(--btn-fitness-border); 
+            background: var(--btn-fitness-bg);
+            color: var(--btn-fitness-text);
+            border: 1px solid var(--btn-fitness-border);
             box-shadow: 0 2px 4px rgba(56, 178, 172, 0.15);
-            margin-left: auto; /* 靠右对齐 */
+            margin-left: auto;
+            /* 靠右对齐 */
         }
+
         .btn-fitness:hover {
             background: var(--btn-fitness-hover);
             transform: translateY(-1px);
@@ -340,22 +406,25 @@
         }
 
         /* 优化：顶部功能按钮统一图标与文字间距 */
-        .btn-fitness, .btn-daily-review, .btn-finish {
+        .btn-fitness,
+        .btn-daily-review,
+        .btn-finish {
             gap: 6px;
         }
 
         /* 5. 今日结束按钮 */
-		.btn-finish { 
-			background: var(--btn-finish-bg); 
-			color: var(--btn-finish-text); 
-			box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15); 
-            border: 1px solid var(--btn-finish-border); 
-		}
-		.btn-finish:hover { 
-			background: var(--btn-finish-hover); 
-			transform: translateY(-1px); 
-			box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); 
-		}
+        .btn-finish {
+            background: var(--btn-finish-bg);
+            color: var(--btn-finish-text);
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15);
+            border: 1px solid var(--btn-finish-border);
+        }
+
+        .btn-finish:hover {
+            background: var(--btn-finish-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        }
 
         .clock-display {
             font-family: 'Ubuntu', monospace;
@@ -366,7 +435,7 @@
             padding: 5px 15px;
             border-radius: var(--radius-sm);
             margin-left: 15px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             height: 42px;
@@ -382,7 +451,7 @@
             justify-content: flex-end;
             margin-left: 15px;
             font-weight: 500;
-            min-width: 100px; 
+            min-width: 100px;
         }
 
         .save-indicator {
@@ -396,18 +465,26 @@
             transition: background 0.3s;
         }
 
-        input[type="text"], input[type="date"], textarea { 
-            width: 100%; 
-            padding: 12px 16px; 
-            border: 1px solid var(--border-color); 
-            border-radius: var(--radius-sm); 
-            font-size: 15px; 
-            transition: all 0.2s; 
-            background: var(--bg-input); 
-            color: var(--text-main); 
-            font-family: inherit; 
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            transition: all 0.2s;
+            background: var(--bg-input);
+            color: var(--text-main);
+            font-family: inherit;
         }
-        input[type="text"]:focus, input[type="date"]:focus, textarea:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15); }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
 
         /* 修复：深色模式下 date 输入框日历图标过暗看不清 */
         /* 方案：通过 CSS filter 统一控制系统日历图标对比度 */
@@ -416,63 +493,151 @@
             opacity: 1;
             cursor: pointer;
         }
-        
+
         /* === 任务控制按钮样式 === */
         /* 基础按钮样式 */
-        button { padding: 10px 20px; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; }
-        button:active { transform: scale(0.98); }
-        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
 
         /* 优化：任务控制按钮改为图标模式，统一尺寸和样式 */
         /* 开始、暂停、完成按钮现在只显示SVG图标，通过title属性显示提示文字 */
-        .btn-start, .btn-pause, .btn-stop {
-            width: 50px;  /* 固定宽度 */
-            height: 44px; /* 调整：高度变短，提升紧凑感 */
-            padding: 0;   /* 移除内边距 */
-            border-radius: 10px; /* 配合较短高度微调圆角 */
-            position: relative; /* 用于定位tooltip */
+        .btn-start,
+        .btn-pause,
+        .btn-stop {
+            width: 50px;
+            /* 固定宽度 */
+            height: 44px;
+            /* 调整：高度变短，提升紧凑感 */
+            padding: 0;
+            /* 移除内边距 */
+            border-radius: 10px;
+            /* 配合较短高度微调圆角 */
+            position: relative;
+            /* 用于定位tooltip */
         }
 
         /* SVG图标在按钮内居中显示 */
-        .btn-start svg, .btn-pause svg, .btn-stop svg {
+        .btn-start svg,
+        .btn-pause svg,
+        .btn-stop svg {
             width: 24px;
             height: 24px;
-            fill: white; /* SVG填充色为白色 */
+            fill: white;
+            /* SVG填充色为白色 */
         }
 
         /* 开始按钮：绿色 */
-        .btn-start { background: var(--success-color); color: white; box-shadow: 0 2px 5px rgba(72, 187, 120, 0.3); }
-        .btn-start:hover:not(:disabled) { background: #38a169; transform: translateY(-2px) scale(1.05); box-shadow: 0 4px 8px rgba(72, 187, 120, 0.4); }
+        .btn-start {
+            background: var(--success-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-start:hover:not(:disabled) {
+            background: #38a169;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(72, 187, 120, 0.4);
+        }
 
         /* 暂停按钮：橙色 */
-        .btn-pause { background: var(--warning-color); color: white; box-shadow: 0 2px 5px rgba(237, 137, 54, 0.3); }
-        .btn-pause:hover:not(:disabled) { background: #dd6b20; transform: translateY(-2px) scale(1.05); box-shadow: 0 4px 8px rgba(237, 137, 54, 0.4); }
+        .btn-pause {
+            background: var(--warning-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-pause:hover:not(:disabled) {
+            background: #dd6b20;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(237, 137, 54, 0.4);
+        }
 
         /* 完成按钮：红色 */
-        .btn-stop { background: var(--danger-color); color: white; box-shadow: 0 2px 5px rgba(245, 101, 101, 0.3); }
-        .btn-stop:hover:not(:disabled) { background: #e53e3e; transform: translateY(-2px) scale(1.05); box-shadow: 0 4px 8px rgba(245, 101, 101, 0.4); }
-        
-        .btn-delete { background: var(--bg-card); color: var(--danger-color); border: 1px solid rgba(245, 101, 101, 0.2); padding: 6px 12px; font-size: 13px; }
-        .btn-delete:hover { background: var(--bg-finish-bg); border-color: var(--danger-color); transform: translateY(-1px); }
-        
-        .btn-flomo { 
-            background: var(--btn-flomo-bg); 
-            color: var(--success-color);
-            border: 1px solid rgba(72, 187, 120, 0.2); 
-            padding: 6px 12px; 
-            font-size: 13px; 
+        .btn-stop {
+            background: var(--danger-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(245, 101, 101, 0.3);
         }
-        .btn-flomo:hover { 
-            background: var(--btn-flomo-hover); 
-            border-color: var(--success-color); 
-            transform: translateY(-1px); 
+
+        .btn-stop:hover:not(:disabled) {
+            background: #e53e3e;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(245, 101, 101, 0.4);
+        }
+
+        .btn-delete {
+            background: var(--bg-card);
+            color: var(--danger-color);
+            border: 1px solid rgba(245, 101, 101, 0.2);
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-delete:hover {
+            background: var(--bg-finish-bg);
+            border-color: var(--danger-color);
+            transform: translateY(-1px);
+        }
+
+        .btn-flomo {
+            background: var(--btn-flomo-bg);
+            color: var(--success-color);
+            border: 1px solid rgba(72, 187, 120, 0.2);
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-flomo:hover {
+            background: var(--btn-flomo-hover);
+            border-color: var(--success-color);
+            transform: translateY(-1px);
             box-shadow: 0 2px 4px rgba(72, 187, 120, 0.15);
         }
-        
-        .btn-add-todo, .btn-add-question { background: var(--secondary-color); color: white; box-shadow: 0 2px 5px rgba(118, 75, 162, 0.3); }
-        .btn-add-todo:hover, .btn-add-question:hover { background: #6b46c1; transform: translateY(-1px); }
-        .btn-add-plan { background: var(--plan-color); color: white; box-shadow: 0 2px 5px rgba(74, 144, 226, 0.3); }
-        .btn-add-plan:hover { background: #357abd; transform: translateY(-1px); }
+
+        .btn-add-todo,
+        .btn-add-question {
+            background: var(--secondary-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(118, 75, 162, 0.3);
+        }
+
+        .btn-add-todo:hover,
+        .btn-add-question:hover {
+            background: #6b46c1;
+            transform: translateY(-1px);
+        }
+
+        .btn-add-plan {
+            background: var(--plan-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-add-plan:hover {
+            background: #357abd;
+            transform: translateY(-1px);
+        }
 
         /* 修复：备注保存按钮不使用 .btn-start 的方形图标尺寸 */
         /* 问题：.btn-start 被用于计时器图标按钮，宽高固定为 50x44 */
@@ -486,6 +651,7 @@
             height: auto;
             border-radius: var(--radius-sm);
         }
+
         .btn-save-note:hover {
             background: #38a169;
             transform: translateY(-1px);
@@ -493,7 +659,10 @@
 
         /* AI 聊天窗口样式 */
         /* 目标：将 AI 功能改为传统聊天模式，降低操作复杂度 */
-        .ai-chat-container { margin-top: 4px; }
+        .ai-chat-container {
+            margin-top: 4px;
+        }
+
         .ai-chat-messages {
             min-height: 260px;
             max-height: 360px;
@@ -503,6 +672,7 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
         }
+
         .ai-chat-empty {
             color: var(--text-sub);
             font-size: 13px;
@@ -510,12 +680,20 @@
             padding: 24px 8px;
             line-height: 1.6;
         }
+
         .ai-chat-row {
             display: flex;
             margin-bottom: 10px;
         }
-        .ai-chat-row.user { justify-content: flex-end; }
-        .ai-chat-row.assistant { justify-content: flex-start; }
+
+        .ai-chat-row.user {
+            justify-content: flex-end;
+        }
+
+        .ai-chat-row.assistant {
+            justify-content: flex-start;
+        }
+
         .ai-chat-bubble {
             max-width: 82%;
             padding: 10px 12px;
@@ -525,42 +703,61 @@
             font-size: 14px;
             line-height: 1.6;
         }
+
         .ai-chat-row.user .ai-chat-bubble {
             background: var(--primary-color);
             color: #fff;
             border-bottom-right-radius: 4px;
         }
+
         .ai-chat-row.assistant .ai-chat-bubble {
             background: var(--bg-card);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             border-bottom-left-radius: 4px;
         }
+
         /* AI 思考中的占位气泡 */
         .ai-chat-bubble.thinking {
             color: var(--text-sub);
             font-style: italic;
             opacity: 0.9;
         }
+
         .ai-chat-input-row {
             display: flex;
             gap: 10px;
             margin-top: 12px;
             align-items: flex-end;
         }
+
         .ai-chat-input-row textarea {
             min-height: 72px;
             max-height: 160px;
             resize: vertical;
         }
+
         .ai-chat-input-row button {
             height: 42px;
             flex-shrink: 0;
         }
-        
-        .btn-save-modal { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); }
-        .btn-save-modal:hover { background: var(--bg-section); border-color: #cbd5e0; }
-        .btn-small { padding: 6px 12px; font-size: 13px; gap: 6px; }
+
+        .btn-save-modal {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-save-modal:hover {
+            background: var(--bg-section);
+            border-color: #cbd5e0;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 13px;
+            gap: 6px;
+        }
 
         .plan-reorder {
             display: flex;
@@ -569,6 +766,7 @@
             margin-right: 8px;
             gap: 4px;
         }
+
         .btn-move {
             width: 24px;
             height: 24px;
@@ -576,7 +774,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--btn-move-bg); 
+            background: var(--btn-move-bg);
             color: var(--btn-move-text);
             border: none;
             border-radius: 6px;
@@ -586,26 +784,38 @@
             box-shadow: none;
             line-height: 1;
         }
+
         .btn-move:hover {
             background: var(--btn-move-hover-bg);
             color: var(--btn-move-hover-text);
             transform: translateY(-1px);
         }
 
-        .task-input-section { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            margin-bottom: 25px; 
-            background: var(--bg-section); 
-            padding: 15px; 
-            border-radius: var(--radius-sm); 
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); 
+        .task-input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: var(--bg-section);
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
             border: 1px solid var(--border-color);
         }
-        .task-input-section input { width: 100%; }
-        .task-buttons-row { display: flex; gap: 10px; width: 100%; }
-        .task-buttons-row button { flex: 1; }
+
+        .task-input-section input {
+            width: 100%;
+        }
+
+        .task-buttons-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .task-buttons-row button {
+            flex: 1;
+        }
 
         /* === 美化：标题栏添加按钮样式 === */
         /* 优化：从简单的文字+号改为带背景的圆形按钮，提升视觉效果和可点击性 */
@@ -613,14 +823,17 @@
             /* 圆形按钮基础样式 */
             width: 32px;
             height: 32px;
-            border-radius: 50%; /* 圆形 */
+            border-radius: 50%;
+            /* 圆形 */
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
             /* 颜色和背景 */
-            background: var(--bg-section); /* 使用主题背景色 */
-            border: 2px solid var(--border-color); /* 边框增强立体感 */
+            background: var(--bg-section);
+            /* 使用主题背景色 */
+            border: 2px solid var(--border-color);
+            /* 边框增强立体感 */
             color: var(--text-sub);
 
             /* 字体样式 */
@@ -630,21 +843,28 @@
 
             /* 布局定位 */
             padding: 0;
-            margin-left: auto; /* 自动靠右对齐 */
+            margin-left: auto;
+            /* 自动靠右对齐 */
             cursor: pointer;
 
             /* 动画过渡效果 */
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* 轻微阴影 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            /* 轻微阴影 */
         }
 
         /* Hover 悬停效果：渐变背景 + 缩放 + 阴影增强 */
         .btn-add-icon:hover {
-            background: var(--primary-gradient); /* 使用主题渐变色 */
-            color: white; /* 白色图标更醒目 */
-            border-color: transparent; /* 隐藏边框 */
-            transform: scale(1.15) rotate(90deg); /* 放大并旋转90度 */
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); /* 增强阴影 */
+            background: var(--primary-gradient);
+            /* 使用主题渐变色 */
+            color: white;
+            /* 白色图标更醒目 */
+            border-color: transparent;
+            /* 隐藏边框 */
+            transform: scale(1.15) rotate(90deg);
+            /* 放大并旋转90度 */
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            /* 增强阴影 */
         }
 
         /* Active 点击效果：轻微缩小 */
@@ -664,82 +884,195 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .current-task { background: var(--bg-card); padding: 25px; border-radius: var(--radius-md); margin-bottom: 25px; border: 1px solid var(--border-color); text-align: center; box-shadow: var(--shadow-sm); }
-        .current-task h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); margin-bottom: 10px; }
-        #currentTaskName { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
-        .timer { font-size: 48px; font-weight: 700; color: var(--primary-color); font-variant-numeric: tabular-nums; text-shadow: 0 2px 4px rgba(102, 126, 234, 0.2); }
+        .current-task {
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: var(--radius-md);
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
 
-        .records, .todo-section, .question-section, .plan-section { 
-            margin-bottom: 20px; 
-            background: var(--bg-card); 
-            padding: 25px; 
-            border-radius: var(--radius-md); 
-            border: 1px solid var(--border-color); 
-            height: 100%; 
-            display: flex; 
+        .current-task h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        #currentTaskName {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .records,
+        .todo-section,
+        .question-section,
+        .plan-section {
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            height: 100%;
+            display: flex;
             flex-direction: column;
             box-shadow: var(--shadow-sm);
         }
-        
-        #recordsList, #todoList, #questionList, #planList { flex: 1; overflow-y: auto; padding-right: 5px; }
-        .section-title { font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
 
-        .question-item { 
-            background: var(--bg-card); 
-            padding: 16px; 
-            border-radius: var(--radius-sm); 
-            margin-bottom: 12px; 
-            border: 1px solid var(--border-color); 
-            transition: all 0.25s ease; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
+        #recordsList,
+        #todoList,
+        #questionList,
+        #planList {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-item {
+            background: var(--bg-card);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
         }
-        
-        .question-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: #cbd5e0; }
-        .question-item.answered { border-left: 4px solid var(--success-color); }
-        
-        .question-content { 
-            width: 100%; 
-            cursor: pointer; 
+
+        .question-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: #cbd5e0;
         }
-        
-        .question-text { 
-            font-weight: 500; 
-            font-size: 15px; 
+
+        .question-item.answered {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .question-content {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .question-text {
+            font-weight: 500;
+            font-size: 15px;
             line-height: 1.6;
         }
-        
+
         .question-actions {
             display: flex;
             width: 100%;
-            justify-content: flex-end; 
+            justify-content: flex-end;
             gap: 10px;
             padding-top: 10px;
-            border-top: 1px dashed var(--border-color); 
+            border-top: 1px dashed var(--border-color);
         }
-        
-        .record-item, .todo-item, .plan-item { background: var(--bg-card); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 12px; border: 1px solid var(--border-color); transition: all 0.25s ease; position: relative; }
-        .record-item:hover, .todo-item:hover, .plan-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: #cbd5e0; }
 
-        .record-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .record-task { font-weight: 700; font-size: 16px; color: var(--text-main); }
-        .record-time { color: var(--primary-color); font-weight: 700; font-family: 'Ubuntu', sans-serif; font-size: 14px; }
-        .record-desc { font-size: 14px; color: var(--text-sub); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-color); background: var(--bg-sub-area); padding: 10px; border-radius: 6px; }
+        .record-item,
+        .todo-item,
+        .plan-item {
+            background: var(--bg-card);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+            position: relative;
+        }
 
-        .todo-item { display: flex; flex-direction: column; gap: 8px; }
-        .todo-item.completed { opacity: 0.6; background: var(--bg-section); }
-        .todo-item.overdue { border-left: 4px solid var(--danger-color); }
-        .todo-header { display: flex; align-items: flex-start; gap: 12px; width: 100%; }
-        
-        .todo-checkbox { 
-            width: 20px; 
-            height: 20px; 
-            margin-top: 3px; 
-            cursor: pointer; 
-            border-radius: 4px; 
-            border: 2px solid var(--checkbox-border); 
+        .record-item:hover,
+        .todo-item:hover,
+        .plan-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: #cbd5e0;
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .record-task {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .record-time {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 14px;
+        }
+
+        .record-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            background: var(--bg-sub-area);
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .todo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+            background: var(--bg-section);
+        }
+
+        .todo-item.overdue {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .todo-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 3px;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 2px solid var(--checkbox-border);
             background-color: var(--checkbox-bg);
             flex-shrink: 0;
             appearance: none;
@@ -747,6 +1080,7 @@
             display: grid;
             place-content: center;
         }
+
         .todo-checkbox::before {
             content: "";
             width: 10px;
@@ -758,36 +1092,47 @@
             transform-origin: center;
             clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
         }
+
         .todo-checkbox:checked::before {
             transform: scale(1);
         }
-        
-        .todo-content { 
+
+        .todo-content {
             flex: 1;
-            min-width: 0; /* 关键：防止 flex 子项无限撑开 */
+            min-width: 0;
+            /* 关键：防止 flex 子项无限撑开 */
             margin-right: 10px;
-            cursor: pointer; 
+            cursor: pointer;
         }
 
-        .todo-text { 
-            font-weight: 700; 
-            color: var(--text-main); 
-            font-size: 15px; 
+        .todo-text {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 15px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .todo-subtitle { 
-            font-size: 13px; 
-            color: var(--text-sub); 
-            margin-top: 4px; 
+        .todo-subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .todo-deadline { font-size: 12px; color: var(--warning-color); margin-top: 4px; font-weight: 600; background: rgba(237, 137, 54, 0.1); display: inline-block; padding: 2px 6px; border-radius: 4px; }
+        .todo-deadline {
+            font-size: 12px;
+            color: var(--warning-color);
+            margin-top: 4px;
+            font-weight: 600;
+            background: rgba(237, 137, 54, 0.1);
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
 
         .todo-group-title {
             font-size: 13px;
@@ -801,11 +1146,13 @@
             cursor: pointer;
             user-select: none;
         }
+
         .todo-group-title:hover {
             opacity: 1;
         }
+
         [data-theme="dark"] .todo-group-title {
-            color: #A5B4FC; 
+            color: #A5B4FC;
         }
 
         .group-icon {
@@ -814,6 +1161,7 @@
             margin-right: 6px;
             vertical-align: sub;
         }
+
         .collapse-icon {
             display: inline-block;
             width: 16px;
@@ -823,33 +1171,291 @@
             transition: transform 0.2s;
         }
 
-        .plan-item { display: flex; gap: 10px; align-items: flex-start; }
-        .plan-item.completed { opacity: 0.6; background: var(--bg-section); }
-        .plan-item.completed .plan-content { text-decoration: line-through; }
-        .plan-main { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .plan-content { font-weight: 700; color: var(--text-main); font-size: 15px; }
-        .plan-deadline { font-size: 12px; color: var(--plan-color); background: rgba(74, 144, 226, 0.1); display: inline-block; padding: 2px 6px; border-radius: 4px; font-weight: 600; width: fit-content; }
-        .plan-actions { display: flex; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
-        .btn-plan-action { font-size: 12px; padding: 6px 10px; box-shadow: none; border: 1px solid var(--border-color); flex: 1; }
-        .btn-to-footprint { background: var(--bg-card); color: var(--success-color); border-color: var(--success-color); }
-        .btn-to-footprint:hover { background: var(--btn-flomo-hover); }
-        .btn-to-todo { background: var(--bg-card); color: var(--secondary-color); border-color: var(--secondary-color); }
-        .btn-to-todo:hover { background: var(--btn-review-bg); }
-        
-        .no-records { text-align: center; color: var(--text-sub); padding: 30px; font-style: italic; background: rgba(0,0,0,0.02); border-radius: var(--radius-sm); }
+        .plan-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
 
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-content { background-color: var(--bg-card); margin: 5% auto; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: none; padding: 35px; width: 90%; max-width: 600px; position: relative; animation: slideDown 0.3s; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .modal-header h2 { font-size: 20px; font-weight: 700; margin: 0; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .close { color: var(--text-sub); font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
-        .close:hover { color: var(--text-main); }
-        .modal-body { margin-bottom: 25px; }
-        .modal-body label { display: block; color: var(--text-main); font-size: 14px; font-weight: 600; margin-bottom: 8px; margin-top: 15px; }
-        .modal-body label:first-child { margin-top: 0; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; align-items: center; }
+        .plan-item.completed {
+            opacity: 0.6;
+            background: var(--bg-section);
+        }
+
+        .plan-item.completed .plan-content {
+            text-decoration: line-through;
+        }
+
+        .plan-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .plan-content {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 15px;
+        }
+
+        .plan-deadline {
+            font-size: 12px;
+            color: var(--plan-color);
+            background: rgba(74, 144, 226, 0.1);
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            width: fit-content;
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        .btn-plan-action {
+            font-size: 12px;
+            padding: 6px 10px;
+            box-shadow: none;
+            border: 1px solid var(--border-color);
+            flex: 1;
+        }
+
+        .btn-to-footprint {
+            background: var(--bg-card);
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .btn-to-footprint:hover {
+            background: var(--btn-flomo-hover);
+        }
+
+        .btn-to-todo {
+            background: var(--bg-card);
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-to-todo:hover {
+            background: var(--btn-review-bg);
+        }
+
+        .no-records {
+            text-align: center;
+            color: var(--text-sub);
+            padding: 30px;
+            font-style: italic;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: var(--radius-sm);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            margin: 5% auto;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: none;
+            padding: 35px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: slideDown 0.3s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close {
+            color: var(--text-sub);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: var(--text-main);
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .modal-body label {
+            display: block;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            margin-top: 15px;
+        }
+
+        .modal-body label:first-child {
+            margin-top: 0;
+        }
+
+        /* === 项目自定义下拉框（Combobox） === */
+        .project-combobox {
+            position: relative;
+            width: 100%;
+        }
+
+        .project-combobox input {
+            width: 100%;
+            padding-right: 36px;
+            /* 留出下拉箭头空间 */
+        }
+
+        .project-combobox .combobox-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .project-combobox .combobox-toggle svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .project-combobox .combobox-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .project-combobox .combobox-toggle.open {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .project-combobox-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            max-height: 180px;
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+            padding: 4px 0;
+        }
+
+        .project-combobox-dropdown.show {
+            display: block;
+            animation: fadeIn 0.15s;
+        }
+
+        .project-combobox-option {
+            padding: 10px 14px;
+            font-size: 14px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-combobox-option:hover,
+        .project-combobox-option.highlighted {
+            background: var(--bg-hover);
+        }
+
+        .project-combobox-option svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: var(--text-sub);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .project-combobox-empty {
+            padding: 12px 14px;
+            font-size: 13px;
+            color: var(--text-sub);
+            font-style: italic;
+            text-align: center;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            align-items: center;
+        }
 
         /* 修复：导入数据弹窗按钮尺寸不一致 */
         /* 问题："全部恢复" 复用了 .btn-start，会被全局图标按钮样式固定为 50x50 */
@@ -878,6 +1484,7 @@
             color: var(--primary-color);
             transition: opacity 0.5s ease;
         }
+
         .loading-spinner {
             width: 40px;
             height: 40px;
@@ -887,6 +1494,7 @@
             animation: spin 1s linear infinite;
             margin-bottom: 15px;
         }
+
         .loading-text {
             font-weight: 600;
             font-size: 18px;
@@ -894,15 +1502,38 @@
             align-items: center;
             gap: 8px;
         }
+
         #manualSaveMsg {
             display: inline-flex;
             align-items: center;
             gap: 4px;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 1200px) { .main-layout { flex-wrap: wrap; } .left-section, .plan-section-container, .middle-section, .right-section { flex: 1 1 45%; } }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-layout {
+                flex-wrap: wrap;
+            }
+
+            .left-section,
+            .plan-section-container,
+            .middle-section,
+            .right-section {
+                flex: 1 1 45%;
+            }
+        }
+
         @media (max-width: 768px) {
+
             /* 移动端去除外层渐变背景与大边距，腾出更多可用空间 */
             body {
                 padding: 0;
@@ -926,7 +1557,10 @@
                 margin-bottom: 16px;
             }
 
-            .file-controls { flex-direction: column; align-items: stretch; }
+            .file-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
             /* 移动端适配 */
             /* 统一顶部功能按钮尺寸：覆盖内联样式和各类按钮默认间距，保证手机端视觉一致 */
@@ -948,8 +1582,17 @@
                 padding: 10px 20px;
             }
 
-            .clock-display { margin-left: 0; margin-top: 10px; justify-content: center; }
-            .auto-save-status { justify-content: center; margin-top: 10px; margin-left: 0; }
+            .clock-display {
+                margin-left: 0;
+                margin-top: 10px;
+                justify-content: center;
+            }
+
+            .auto-save-status {
+                justify-content: center;
+                margin-top: 10px;
+                margin-left: 0;
+            }
 
             /* 移动端分页视口：隐藏溢出内容，仅展示当前模块页 */
             .mobile-swiper-viewport {
@@ -1037,13 +1680,14 @@
         }
     </style>
 </head>
+
 <body>
     <div id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text">
             <svg class="icon-lucide icon-lucide-lg" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/>
-                <path d="M8 16h8"/>
+                <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25" />
+                <path d="M8 16h8" />
             </svg>
             <span>正在从云端同步数据...</span>
         </div>
@@ -1053,79 +1697,85 @@
         <h1>
             🏃‍➡️吾生有涯，不负韶华🧘
         </h1>
-        
+
         <div class="file-controls">
             <button class="btn-theme" onclick="toggleTheme()" title="切换主题" id="themeToggleBtn">
                 <!-- 优化：默认使用 moon 图标，进入暗色模式时切换为 sun 图标 -->
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
 
             <label for="fileInput" class="btn-data">
                 <!-- 修复：使用 SVG 替代 emoji，避免图标在部分设备上变形 -->
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M3 7.5C3 6.12 4.12 5 5.5 5H9L11 7H18.5C19.88 7 21 8.12 21 9.5V16.5C21 17.88 19.88 19 18.5 19H5.5C4.12 19 3 17.88 3 16.5V7.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    <path d="M3 10H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path
+                        d="M3 7.5C3 6.12 4.12 5 5.5 5H9L11 7H18.5C19.88 7 21 8.12 21 9.5V16.5C21 17.88 19.88 19 18.5 19H5.5C4.12 19 3 17.88 3 16.5V7.5Z"
+                        stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    <path d="M3 10H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                 </svg>
                 <span>数据加载</span>
             </label>
             <input type="file" id="fileInput" accept=".json" onchange="loadFromFile(event)">
-            
+
             <button class="btn-data" onclick="handleLocalBackupClick()">
                 <!-- 优化：本地备份按钮也统一为 SVG 图标，保持视觉一致 -->
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M5 4H16L19 7V20H5V4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    <path d="M8 4V10H16V4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    <path d="M9 16H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path d="M5 4H16L19 7V20H5V4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    <path d="M8 4V10H16V4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    <path d="M9 16H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                 </svg>
                 <span>本地备份</span>
             </button>
 
             <button class="btn-ai" onclick="openAiModal()">
                 <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2v4"/>
-                    <path d="M12 18v4"/>
-                    <path d="M4.93 4.93l2.83 2.83"/>
-                    <path d="M16.24 16.24l2.83 2.83"/>
-                    <path d="M2 12h4"/>
-                    <path d="M18 12h4"/>
-                    <path d="M4.93 19.07l2.83-2.83"/>
-                    <path d="M16.24 7.76l2.83-2.83"/>
-                    <circle cx="12" cy="12" r="3.5"/>
+                    <path d="M12 2v4" />
+                    <path d="M12 18v4" />
+                    <path d="M4.93 4.93l2.83 2.83" />
+                    <path d="M16.24 16.24l2.83 2.83" />
+                    <path d="M2 12h4" />
+                    <path d="M18 12h4" />
+                    <path d="M4.93 19.07l2.83-2.83" />
+                    <path d="M16.24 7.76l2.83-2.83" />
+                    <circle cx="12" cy="12" r="3.5" />
                 </svg>
                 <span>AI 助手</span>
             </button>
 
             <button class="btn-fitness" onclick="window.open('https://liumaodou.xyz/vigor-tracker/', '_blank')">
                 <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"/>
+                    <line x1="12" y1="1" x2="12" y2="23" />
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
                 <span>以终为始</span>
             </button>
 
             <button class="btn-daily-review" style="margin-left: 10px;" onclick="openDailyReviewModal()">
                 <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 <span>今日复盘</span>
             </button>
 
             <button class="btn-finish" onclick="finishToday()">
                 <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M8 21h8"/>
-                    <path d="M12 17v4"/>
-                    <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/>
-                    <path d="M5 6H3a2 2 0 0 0 2 2"/>
-                    <path d="M19 6h2a2 2 0 0 1-2 2"/>
+                    <path d="M8 21h8" />
+                    <path d="M12 17v4" />
+                    <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" />
+                    <path d="M5 6H3a2 2 0 0 0 2 2" />
+                    <path d="M19 6h2a2 2 0 0 1-2 2" />
                 </svg>
                 <span>今日结束</span>
             </button>
-            
+
             <div id="sysClock" class="clock-display">00:00:00</div>
 
             <div class="auto-save-status">
@@ -1133,131 +1783,161 @@
                 <span id="saveStatus">连接中...</span>
             </div>
         </div>
-        
+
         <!-- 移动端分页视口：仅在手机端启用横向切页，桌面端保持原有四列布局 -->
         <div class="mobile-swiper-viewport" id="mobileSwiperViewport">
             <div class="main-layout" id="mainLayout">
-            <div class="left-section">
-                <div class="records">
-                    <h2 class="section-title">
-                        <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 16 14"/>
-                        </svg>
-                        <span>今日足迹</span>
-                    </h2>
-                    <div class="task-input-section">
-                        <input type="text" id="taskInput" placeholder="准备开始什么任务？...">
-                        <div class="task-buttons-row">
-                            <!-- 开始按钮：播放图标 -->
-                            <button class="btn-start" id="startBtn" onclick="startTask()" title="开始专注">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 5v14l11-7z" fill="white"/>
-                                </svg>
-                            </button>
+                <div class="left-section">
+                    <div class="records">
+                        <h2 class="section-title">
+                            <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            <span>今日足迹</span>
+                        </h2>
+                        <div class="task-input-section">
+                            <input type="text" id="taskInput" placeholder="准备开始什么任务？...">
+                            <div class="task-buttons-row">
+                                <!-- 开始按钮：播放图标 -->
+                                <button class="btn-start" id="startBtn" onclick="startTask()" title="开始专注">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5v14l11-7z" fill="white" />
+                                    </svg>
+                                </button>
 
-                            <!-- 暂停按钮：双竖条图标 -->
-                            <button class="btn-pause" id="pauseBtn" onclick="pauseTask()" disabled title="暂停">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" fill="white"/>
-                                </svg>
-                            </button>
+                                <!-- 暂停按钮：双竖条图标 -->
+                                <button class="btn-pause" id="pauseBtn" onclick="pauseTask()" disabled title="暂停">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" fill="white" />
+                                    </svg>
+                                </button>
 
-                            <!-- 完成按钮：勾号图标 -->
-                            <button class="btn-stop" id="stopBtn" onclick="stopTask()" disabled title="完成任务">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="white"/>
-                                </svg>
-                            </button>
+                                <!-- 完成按钮：勾号图标 -->
+                                <button class="btn-stop" id="stopBtn" onclick="stopTask()" disabled title="完成任务">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
+                                            fill="white" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="current-task" id="currentTaskSection" style="display: none;">
+                            <h2>正在进行</h2>
+                            <div id="currentTaskName"></div>
+                            <div class="timer" id="timer">00:00:00</div>
+                            <textarea id="currentTaskDescInput" placeholder="在此记录任务备注、灵感或进展..."
+                                style="margin-top: 15px; height: 80px; font-size: 14px; resize: vertical;"
+                                oninput="updateLocalDesc(this.value)"></textarea>
+                            <div style="text-align: right; margin-top: 10px;">
+                                <span id="manualSaveMsg"
+                                    style="font-size: 12px; color: var(--success-color); margin-right: 10px; opacity: 0; transition: opacity 0.5s;">
+                                    <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M20 6 9 17l-5-5" />
+                                    </svg>
+                                    已同步
+                                </span>
+                                <button class="btn-small btn-save-note" onclick="saveCurrentTaskDesc()">
+                                    <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M5 4H16L19 7V20H5V4Z" />
+                                        <path d="M8 4V10H16V4" />
+                                        <path d="M9 16H15" />
+                                    </svg>
+                                    <span>保存备注</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="recordsList">
+                            <div class="no-records">今天还没有开始记录，加油！</div>
                         </div>
                     </div>
-                    <div class="current-task" id="currentTaskSection" style="display: none;">
-                        <h2>正在进行</h2>
-                        <div id="currentTaskName"></div>
-                        <div class="timer" id="timer">00:00:00</div>
-                        <textarea id="currentTaskDescInput" placeholder="在此记录任务备注、灵感或进展..." style="margin-top: 15px; height: 80px; font-size: 14px; resize: vertical;" oninput="updateLocalDesc(this.value)"></textarea>
-                        <div style="text-align: right; margin-top: 10px;">
-                            <span id="manualSaveMsg" style="font-size: 12px; color: var(--success-color); margin-right: 10px; opacity: 0; transition: opacity 0.5s;">
-                                <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                                已同步
-                            </span>
-                            <button class="btn-small btn-save-note" onclick="saveCurrentTaskDesc()">
-                                <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4H16L19 7V20H5V4Z"/><path d="M8 4V10H16V4"/><path d="M9 16H15"/></svg>
-                                <span>保存备注</span>
-                            </button>
+                </div>
+
+                <div class="plan-section-container">
+                    <div class="plan-section">
+                        <h2 class="section-title">
+                            <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                            <span>今日规划</span>
+                            <button class="btn-add-icon" onclick="openAddPlanModal()" title="添加规划">+</button>
+                        </h2>
+                        <div id="planList">
+                            <div class="no-records">暂无规划</div>
                         </div>
                     </div>
-                    <div id="recordsList"><div class="no-records">今天还没有开始记录，加油！</div></div>
+                </div>
+
+                <div class="middle-section">
+                    <div class="todo-section">
+                        <h2 class="section-title">
+                            <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                                <line x1="8" y1="6" x2="21" y2="6" />
+                                <line x1="8" y1="12" x2="21" y2="12" />
+                                <line x1="8" y1="18" x2="21" y2="18" />
+                                <line x1="3" y1="6" x2="3.01" y2="6" />
+                                <line x1="3" y1="12" x2="3.01" y2="12" />
+                                <line x1="3" y1="18" x2="3.01" y2="18" />
+                            </svg>
+                            <span>待办清单</span>
+                            <button class="btn-add-icon" onclick="openAddTodoModal()" title="添加待办">+</button>
+                        </h2>
+                        <div id="todoList">
+                            <div class="no-records">暂无待办</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-section">
+                    <div class="question-section">
+                        <h2 class="section-title">
+                            <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M9 18h6" />
+                                <path d="M10 22h4" />
+                                <path
+                                    d="M12 2a7 7 0 0 0-4 12.74c.5.37 1 .9 1.2 1.46L9.5 17h5l.3-.8c.2-.56.7-1.09 1.2-1.46A7 7 0 0 0 12 2Z" />
+                            </svg>
+                            <span>灵感洞察</span>
+                            <button class="btn-add-icon" onclick="openAddQuestionModal()" title="记录灵感">+</button>
+                        </h2>
+                        <div id="questionList">
+                            <div class="no-records">静候灵感降临...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="plan-section-container">
-                <div class="plan-section">
-                    <h2 class="section-title">
-                        <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                        </svg>
-                        <span>今日规划</span>
-                        <button class="btn-add-icon" onclick="openAddPlanModal()" title="添加规划">+</button>
-                    </h2>
-                    <div id="planList"><div class="no-records">暂无规划</div></div>
+            <!-- 移动端分页导航：按钮 + 圆点双兜底，避免仅靠手势造成可用性问题 -->
+            <div class="mobile-module-nav" id="mobileModuleNav" aria-label="移动端模块导航">
+                <button type="button" class="mobile-nav-btn" id="mobilePrevBtn">上一页</button>
+                <div class="mobile-module-dots" id="mobileModuleDots" aria-label="模块分页圆点">
+                    <button type="button" class="mobile-module-dot" data-index="0" aria-label="切换到今日足迹"
+                        title="今日足迹"></button>
+                    <button type="button" class="mobile-module-dot" data-index="1" aria-label="切换到今日规划"
+                        title="今日规划"></button>
+                    <button type="button" class="mobile-module-dot" data-index="2" aria-label="切换到待办清单"
+                        title="待办清单"></button>
+                    <button type="button" class="mobile-module-dot" data-index="3" aria-label="切换到灵感洞察"
+                        title="灵感洞察"></button>
                 </div>
+                <button type="button" class="mobile-nav-btn" id="mobileNextBtn">下一页</button>
             </div>
-
-            <div class="middle-section">
-                <div class="todo-section">
-                    <h2 class="section-title">
-                        <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                            <line x1="8" y1="6" x2="21" y2="6"/>
-                            <line x1="8" y1="12" x2="21" y2="12"/>
-                            <line x1="8" y1="18" x2="21" y2="18"/>
-                            <line x1="3" y1="6" x2="3.01" y2="6"/>
-                            <line x1="3" y1="12" x2="3.01" y2="12"/>
-                            <line x1="3" y1="18" x2="3.01" y2="18"/>
-                        </svg>
-                        <span>待办清单</span>
-                        <button class="btn-add-icon" onclick="openAddTodoModal()" title="添加待办">+</button>
-                    </h2>
-                    <div id="todoList"><div class="no-records">暂无待办</div></div>
-                </div>
-            </div>
-
-            <div class="right-section">
-                <div class="question-section">
-                    <h2 class="section-title">
-                        <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M9 18h6"/>
-                            <path d="M10 22h4"/>
-                            <path d="M12 2a7 7 0 0 0-4 12.74c.5.37 1 .9 1.2 1.46L9.5 17h5l.3-.8c.2-.56.7-1.09 1.2-1.46A7 7 0 0 0 12 2Z"/>
-                        </svg>
-                        <span>灵感洞察</span>
-                        <button class="btn-add-icon" onclick="openAddQuestionModal()" title="记录灵感">+</button>
-                    </h2>
-                    <div id="questionList"><div class="no-records">静候灵感降临...</div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 移动端分页导航：按钮 + 圆点双兜底，避免仅靠手势造成可用性问题 -->
-        <div class="mobile-module-nav" id="mobileModuleNav" aria-label="移动端模块导航">
-            <button type="button" class="mobile-nav-btn" id="mobilePrevBtn">上一页</button>
-            <div class="mobile-module-dots" id="mobileModuleDots" aria-label="模块分页圆点">
-                <button type="button" class="mobile-module-dot" data-index="0" aria-label="切换到今日足迹" title="今日足迹"></button>
-                <button type="button" class="mobile-module-dot" data-index="1" aria-label="切换到今日规划" title="今日规划"></button>
-                <button type="button" class="mobile-module-dot" data-index="2" aria-label="切换到待办清单" title="待办清单"></button>
-                <button type="button" class="mobile-module-dot" data-index="3" aria-label="切换到灵感洞察" title="灵感洞察"></button>
-            </div>
-            <button type="button" class="mobile-nav-btn" id="mobileNextBtn">下一页</button>
-        </div>
         </div>
     </div>
 
     <div id="addPlanModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>添加今日规划</span></h2><span class="close" onclick="closeAddPlanModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg><span>添加今日规划</span></h2><span class="close" onclick="closeAddPlanModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <label>规划内容：</label>
                 <input type="text" id="planInput" placeholder="输入今日规划...">
@@ -1271,10 +1951,28 @@
 
     <div id="addTodoModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>添加待办事项</span></h2><span class="close" onclick="closeAddTodoModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <line x1="8" y1="6" x2="21" y2="6" />
+                        <line x1="8" y1="12" x2="21" y2="12" />
+                        <line x1="8" y1="18" x2="21" y2="18" />
+                        <line x1="3" y1="6" x2="3.01" y2="6" />
+                        <line x1="3" y1="12" x2="3.01" y2="12" />
+                        <line x1="3" y1="18" x2="3.01" y2="18" />
+                    </svg><span>添加待办事项</span></h2><span class="close" onclick="closeAddTodoModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <label>待办内容：</label><input type="text" id="todoInput" placeholder="输入待办事项...">
-                <label>所属项目：</label><input type="text" id="todoProjectInput" placeholder="所属项目 (如:工作)...">
+                <label>所属项目：</label>
+                <div class="project-combobox" id="addTodoCombobox">
+                    <input type="text" id="todoProjectInput" placeholder="选择或输入项目名称..." autocomplete="off">
+                    <span class="combobox-toggle" onclick="toggleProjectDropdown('addTodoCombobox')">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                    <div class="project-combobox-dropdown" id="addTodoProjectDropdown"></div>
+                </div>
                 <label>补充描述：</label><input type="text" id="todoSubtitleInput" placeholder="补充描述（可选）...">
                 <label>截止日期：</label><input type="date" id="todoDeadline">
             </div>
@@ -1287,7 +1985,14 @@
 
     <div id="addQuestionModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.74c.5.37 1 .9 1.2 1.46L9.5 17h5l.3-.8c.2-.56.7-1.09 1.2-1.46A7 7 0 0 0 12 2Z"/></svg><span>记录灵感</span></h2><span class="close" onclick="closeAddQuestionModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18h6" />
+                        <path d="M10 22h4" />
+                        <path
+                            d="M12 2a7 7 0 0 0-4 12.74c.5.37 1 .9 1.2 1.46L9.5 17h5l.3-.8c.2-.56.7-1.09 1.2-1.46A7 7 0 0 0 12 2Z" />
+                    </svg><span>记录灵感</span></h2><span class="close" onclick="closeAddQuestionModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <label>灵感内容：</label>
                 <input type="text" id="questionInput" placeholder="捕捉闪念、问题...">
@@ -1301,39 +2006,77 @@
 
     <div id="todoEditModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"/></svg><span>编辑待办</span></h2><span class="close" onclick="closeTodoEditModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+                    </svg><span>编辑待办</span></h2><span class="close" onclick="closeTodoEditModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <label>待办内容：</label><input type="text" id="editTodoText">
-                <label>所属项目：</label><input type="text" id="editTodoProject" placeholder="例如：工作、生活、学习">
+                <label>所属项目：</label>
+                <div class="project-combobox" id="editTodoCombobox">
+                    <input type="text" id="editTodoProject" placeholder="选择或输入项目名称..." autocomplete="off">
+                    <span class="combobox-toggle" onclick="toggleProjectDropdown('editTodoCombobox')">
+                        <svg viewBox="0 0 24 24">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </span>
+                    <div class="project-combobox-dropdown" id="editTodoProjectDropdown"></div>
+                </div>
                 <label>补充描述：</label><input type="text" id="editTodoSubtitle">
                 <label>截止日期：</label><input type="date" id="editTodoDeadline">
             </div>
             <!-- 优化：待办编辑弹窗主按钮文案与尺寸统一 -->
             <!-- 调整：将“保存修改”改为“保存”，并使用 .btn-save-modal 使其与“取消”按钮同尺寸 -->
-            <div class="modal-footer"><button class="btn-save-modal" onclick="closeTodoEditModal()">取消</button><button class="btn-save-modal" onclick="saveTodoEdit()">保存</button></div>
+            <div class="modal-footer"><button class="btn-save-modal" onclick="closeTodoEditModal()">取消</button><button
+                    class="btn-save-modal" onclick="saveTodoEdit()">保存</button></div>
         </div>
     </div>
 
     <div id="answerModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.74c.5.37 1 .9 1.2 1.46L9.5 17h5l.3-.8c.2-.56.7-1.09 1.2-1.46A7 7 0 0 0 12 2Z"/></svg><span>深度思考</span></h2><span class="close" onclick="closeAnswerModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 18h6" />
+                        <path d="M10 22h4" />
+                        <path
+                            d="M12 2a7 7 0 0 0-4 12.74c.5.37 1 .9 1.2 1.46L9.5 17h5l.3-.8c.2-.56.7-1.09 1.2-1.46A7 7 0 0 0 12 2Z" />
+                    </svg><span>深度思考</span></h2><span class="close" onclick="closeAnswerModal()">&times;</span>
+            </div>
             <div class="modal-body">
-                <label>原始内容：</label><p id="modalQuestionText" style="margin-bottom: 20px; color: var(--text-main); font-weight: 500; font-size: 16px; padding: 10px; background: var(--bg-section); border-radius: 8px;"></p>
+                <label>原始内容：</label>
+                <p id="modalQuestionText"
+                    style="margin-bottom: 20px; color: var(--text-main); font-weight: 500; font-size: 16px; padding: 10px; background: var(--bg-section); border-radius: 8px;">
+                </p>
                 <label>洞察/解决方案：</label><textarea id="answerInput" placeholder="在这里深化您的思考..."></textarea>
             </div>
-            <div class="modal-footer"><button class="btn-save-modal" onclick="closeAnswerModal()">取消</button><button class="btn-start" onclick="saveAnswer()">保存记录</button></div>
+            <div class="modal-footer"><button class="btn-save-modal" onclick="closeAnswerModal()">取消</button><button
+                    class="btn-start" onclick="saveAnswer()">保存记录</button></div>
         </div>
     </div>
 
     <div id="descModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>任务复盘</span></h2><span class="close" onclick="closeDescModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <line x1="8" y1="6" x2="21" y2="6" />
+                        <line x1="8" y1="12" x2="21" y2="12" />
+                        <line x1="8" y1="18" x2="21" y2="18" />
+                        <line x1="3" y1="6" x2="3.01" y2="6" />
+                        <line x1="3" y1="12" x2="3.01" y2="12" />
+                        <line x1="3" y1="18" x2="3.01" y2="18" />
+                    </svg><span>任务复盘</span></h2><span class="close" onclick="closeDescModal()">&times;</span>
+            </div>
             <div class="modal-body">
-                <label>任务名称：</label><p id="modalRecordTask" style="margin-bottom: 20px; font-weight: 600; font-size: 16px; color: var(--text-main);"></p>
+                <label>任务名称：</label>
+                <p id="modalRecordTask"
+                    style="margin-bottom: 20px; font-weight: 600; font-size: 16px; color: var(--text-main);"></p>
                 <label>补充描述/复盘：</label><textarea id="descInput" placeholder="记录这个任务的完成情况..."></textarea>
             </div>
             <div class="modal-footer">
-                <button class="btn-small btn-flomo" style="margin-right: auto;" onclick="sendRecordToFlomo()">Flomo</button>
+                <button class="btn-small btn-flomo" style="margin-right: auto;"
+                    onclick="sendRecordToFlomo()">Flomo</button>
                 <button class="btn-save-modal" onclick="closeDescModal()">取消</button>
                 <button class="btn-start" onclick="saveDescription()">保存</button>
             </div>
@@ -1342,7 +2085,14 @@
 
     <div id="planDescModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>规划详情</span></h2><span class="close" onclick="closePlanDescModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg><span>规划详情</span></h2><span class="close" onclick="closePlanDescModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <label>规划内容：</label><input type="text" id="editPlanContent">
                 <label>备注/描述：</label><textarea id="editPlanDesc" placeholder="为该规划添加备注信息..."></textarea>
@@ -1356,13 +2106,22 @@
 
     <div id="dailyReviewModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>今日复盘</span></h2><span class="close" onclick="closeDailyReviewModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg><span>今日复盘</span></h2><span class="close" onclick="closeDailyReviewModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <label>今日总结：</label>
-                <textarea id="dailyReviewInput" placeholder="回顾今天的工作，写下你的成就、反思和改进计划..." style="height: 200px; padding: 15px; font-size: 15px;"></textarea>
+                <textarea id="dailyReviewInput" placeholder="回顾今天的工作，写下你的成就、反思和改进计划..."
+                    style="height: 200px; padding: 15px; font-size: 15px;"></textarea>
             </div>
             <div class="modal-footer">
-                <button class="btn-small btn-flomo" style="margin-right: auto;" onclick="sendDailyReviewToFlomo()">Flomo</button>
+                <button class="btn-small btn-flomo" style="margin-right: auto;"
+                    onclick="sendDailyReviewToFlomo()">Flomo</button>
                 <button class="btn-save-modal" onclick="closeDailyReviewModal()">取消</button>
             </div>
         </div>
@@ -1370,26 +2129,48 @@
 
     <div id="importModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span>导入数据确认</span></h2><span class="close" onclick="closeImportModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3v12" />
+                        <path d="M7 10l5 5 5-5" />
+                        <path d="M5 21h14" />
+                    </svg><span>导入数据确认</span></h2><span class="close" onclick="closeImportModal()">&times;</span>
+            </div>
             <div class="modal-body">
                 <p style="color: var(--text-main);">您希望如何处理数据？</p>
-                <div style="background: var(--bg-section); padding: 15px; border-radius: 8px; font-size: 14px; color: var(--text-sub);">
-                    <p style="margin-bottom: 8px;"><strong>选项 1: 清空并导入</strong> - 适合新的一天</p><p><strong>选项 2: 全部导入</strong> - 适合恢复工作</p>
+                <div
+                    style="background: var(--bg-section); padding: 15px; border-radius: 8px; font-size: 14px; color: var(--text-sub);">
+                    <p style="margin-bottom: 8px;"><strong>选项 1: 清空并导入</strong> - 适合新的一天</p>
+                    <p><strong>选项 2: 全部导入</strong> - 适合恢复工作</p>
                 </div>
             </div>
-            <div class="modal-footer"><button class="btn-save-modal" onclick="confirmImport(true)">清空记录</button><button class="btn-start" onclick="confirmImport(false)">全部恢复</button></div>
+            <div class="modal-footer"><button class="btn-save-modal" onclick="confirmImport(true)">清空记录</button><button
+                    class="btn-start" onclick="confirmImport(false)">全部恢复</button></div>
         </div>
     </div>
 
     <div id="aiModal" class="modal">
         <div class="modal-content" style="max-width: 760px;">
-            <div class="modal-header"><h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3.5"/></svg><span>AI 聊天助手</span></h2><span class="close" onclick="closeAiModal()">&times;</span></div>
+            <div class="modal-header">
+                <h2><svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2v4" />
+                        <path d="M12 18v4" />
+                        <path d="M4.93 4.93l2.83 2.83" />
+                        <path d="M16.24 16.24l2.83 2.83" />
+                        <path d="M2 12h4" />
+                        <path d="M18 12h4" />
+                        <path d="M4.93 19.07l2.83-2.83" />
+                        <path d="M16.24 7.76l2.83-2.83" />
+                        <circle cx="12" cy="12" r="3.5" />
+                    </svg><span>AI 聊天助手</span></h2><span class="close" onclick="closeAiModal()">&times;</span>
+            </div>
             <div class="modal-body ai-chat-container">
                 <!-- 简化：按需求移除默认提示文案，初始保持空白聊天区域 -->
                 <div id="aiChatMessages" class="ai-chat-messages"></div>
 
                 <div class="ai-chat-input-row">
-                    <textarea id="aiPromptInput" placeholder="例如：1) 总结今天记录 2) 把今天到期的待办前面加【紧急】" aria-label="AI 输入"></textarea>
+                    <textarea id="aiPromptInput" placeholder="例如：1) 总结今天记录 2) 把今天到期的待办前面加【紧急】"
+                        aria-label="AI 输入"></textarea>
                     <button class="btn-data" id="aiSendBtn" onclick="sendAiMessage()">发送</button>
                 </div>
             </div>
@@ -1402,19 +2183,19 @@
 
     <script>
         window.currentTask = null;
-        window.currentTaskDescription = ""; 
+        window.currentTaskDescription = "";
         window.startTime = null;
         window.pausedTime = 0;
         window.timerInterval = null;
         window.isPaused = false;
-        
+
         window.records = [];
         window.todos = [];
         window.questions = [];
-        window.dailyPlans = []; 
+        window.dailyPlans = [];
         window.currentPlanId = null;
-        window.currentTodoId = null; 
-        
+        window.currentTodoId = null;
+
         let currentQuestionId = null;
         let currentRecordIndex = null;
         let currentPlanEditId = null;
@@ -1430,7 +2211,7 @@
         // 防抖函数定义：彻底解决输入时的高频同步抖动
         function debounce(func, wait) {
             let timeout;
-            return function() {
+            return function () {
                 const context = this, args = arguments;
                 clearTimeout(timeout);
                 timeout = setTimeout(() => func.apply(context, args), wait);
@@ -1459,7 +2240,7 @@
         }
 
         // 主题切换逻辑
-        window.toggleTheme = function() {
+        window.toggleTheme = function () {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             const newTheme = isDark ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
@@ -1472,7 +2253,7 @@
         // 修复：将 triggerSync 改为异步函数，确保数据完全保存到云端后再继续执行
         // 问题：之前是同步调用，导致勾选待办后删除操作还没保存就执行了下一步
         // 解决：使用 async/await 等待 saveToCloud 完成，保证数据同步的可靠性
-        window.triggerSync = async function() {
+        window.triggerSync = async function () {
             if (window.saveToCloud) {
                 await window.saveToCloud(); // 等待云端保存完成
             } else {
@@ -1481,7 +2262,7 @@
         }
 
         // 创建防抖版本的 sync，延迟 1000ms（1秒）
-        const debouncedSave = debounce(function() {
+        const debouncedSave = debounce(function () {
             window.triggerSync();
         }, 1000);
 
@@ -1725,9 +2506,9 @@
                 </svg>`;
                 pauseBtn.title = '暂停';
             }
-        } 
+        }
 
-        window.refreshAllUI = function() {
+        window.refreshAllUI = function () {
             updateRecordsList();
             updateTodoList();
             updateQuestionList();
@@ -1752,19 +2533,19 @@
             setInterval(updateSystemTime, 1000);
             updateSaveStatus('连接中...');
         });
-        
+
         function updateSystemTime() {
             document.getElementById('sysClock').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
         }
 
         // AI 助手弹窗控制
         // 功能：打开/关闭聊天弹窗
-        window.openAiModal = function() {
+        window.openAiModal = function () {
             const modal = document.getElementById('aiModal');
             if (!modal) return;
             modal.style.display = 'block';
         }
-        window.closeAiModal = function() {
+        window.closeAiModal = function () {
             const modal = document.getElementById('aiModal');
             if (!modal) return;
             modal.style.display = 'none';
@@ -1830,7 +2611,7 @@
 
         // 清空 AI 聊天
         // 功能：清空界面消息和上下文历史，回到初始状态
-        window.clearAiChat = function() {
+        window.clearAiChat = function () {
             aiChatHistory = [];
             const box = document.getElementById('aiChatMessages');
             if (!box) return;
@@ -1841,7 +2622,7 @@
 
         // 发送 AI 消息（传统 chat 模式）
         // 行为：用户发送 -> AI 回复；若 AI 返回 patch，则自动应用并同步，再回消息确认
-        window.sendAiMessage = async function() {
+        window.sendAiMessage = async function () {
             const input = document.getElementById('aiPromptInput');
             const sendBtn = document.getElementById('aiSendBtn');
             if (!input || !sendBtn) return;
@@ -1946,7 +2727,7 @@
             return isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
         }
 
-        window.finishToday = function() {
+        window.finishToday = function () {
             if (window.records.length === 0 && window.dailyPlans.length === 0 && !window.currentTask) {
                 alert("今日暂无数据，无需结算。");
                 return;
@@ -1957,7 +2738,7 @@
             }
 
             if (window.currentTask) {
-                stopTask(); 
+                stopTask();
             }
 
             if (window.records.length > 0) {
@@ -1967,7 +2748,7 @@
             setTimeout(() => {
                 window.records = [];
                 window.dailyPlans = [];
-                
+
                 window.currentTask = null;
                 window.currentTaskDescription = "";
                 window.currentPlanId = null;
@@ -1979,21 +2760,21 @@
                 updateTimerUI(false);
 
                 refreshAllUI();
-                
+
                 triggerSync();
-            }, 800); 
+            }, 800);
         }
-        
-        window.handleLocalBackupClick = function() {
+
+        window.handleLocalBackupClick = function () {
             try {
                 const data = {
                     records: window.records.map(r => ({ ...r, timestamp: toSafeISO(r.timestamp) })),
                     todos: window.todos.map(t => ({ ...t, createdAt: toSafeISO(t.createdAt) })),
                     questions: window.questions.map(q => ({ ...q, createdAt: toSafeISO(q.createdAt) })),
-                    dailyPlans: window.dailyPlans.map(p => ({ ...p, createdAt: toSafeISO(p.createdAt) })), 
+                    dailyPlans: window.dailyPlans.map(p => ({ ...p, createdAt: toSafeISO(p.createdAt) })),
                     currentTask: window.currentTask,
-                    currentTaskDescription: window.currentTaskDescription, 
-                    currentPlanId: window.currentPlanId, 
+                    currentTaskDescription: window.currentTaskDescription,
+                    currentPlanId: window.currentPlanId,
                     currentTodoId: window.currentTodoId,
                     startTime: window.startTime,
                     pausedTime: window.pausedTime,
@@ -2006,22 +2787,22 @@
                 const blob = new Blob([jsonStr], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                
+
                 const now = new Date();
                 const month = String(now.getMonth() + 1).padStart(2, '0');
                 const day = String(now.getDate()).padStart(2, '0');
                 const hour = String(now.getHours()).padStart(2, '0');
                 const minute = String(now.getMinutes()).padStart(2, '0');
                 const second = String(now.getSeconds()).padStart(2, '0');
-                
+
                 a.href = url;
                 a.download = `Time-Tracker-${month}-${day}-${hour}-${minute}-${second}.json`;
-                
+
                 document.body.appendChild(a);
                 a.click();
-                document.body.removeChild(a); 
+                document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                
+
                 updateSaveStatus('✅ 本地已备份');
             } catch (e) {
                 console.error(e);
@@ -2029,13 +2810,13 @@
             }
         }
 
-        window.openDailyReviewModal = function() {
+        window.openDailyReviewModal = function () {
             document.getElementById('dailyReviewModal').style.display = 'block';
         }
-        window.closeDailyReviewModal = function() {
+        window.closeDailyReviewModal = function () {
             document.getElementById('dailyReviewModal').style.display = 'none';
         }
-        window.sendDailyReviewToFlomo = function() {
+        window.sendDailyReviewToFlomo = function () {
             const content = document.getElementById('dailyReviewInput').value.trim();
             if (!content) {
                 alert("请输入复盘内容");
@@ -2049,67 +2830,68 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: contentToSend })
             })
-            .then(response => {
-                if (response.ok) {
-                    alert("✅ 今日复盘已成功发送到 Flomo！");
-                    closeDailyReviewModal();
-                    document.getElementById('dailyReviewInput').value = ''; 
-                } else {
-                    alert("❌ 发送失败，请检查网络。");
-                }
-            })
-            .catch(error => {
-                alert("❌ 发送出错：" + error.message);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        alert("✅ 今日复盘已成功发送到 Flomo！");
+                        closeDailyReviewModal();
+                        document.getElementById('dailyReviewInput').value = '';
+                    } else {
+                        alert("❌ 发送失败，请检查网络。");
+                    }
+                })
+                .catch(error => {
+                    alert("❌ 发送出错：" + error.message);
+                });
         }
 
         // === 新增：模态框控制逻辑 ===
-        window.openAddPlanModal = function() { 
-            document.getElementById('addPlanModal').style.display = 'block'; 
-            document.getElementById('planInput').focus(); 
+        window.openAddPlanModal = function () {
+            document.getElementById('addPlanModal').style.display = 'block';
+            document.getElementById('planInput').focus();
         }
-        window.closeAddPlanModal = function() { document.getElementById('addPlanModal').style.display = 'none'; }
+        window.closeAddPlanModal = function () { document.getElementById('addPlanModal').style.display = 'none'; }
 
-        window.openAddTodoModal = function() { 
-            document.getElementById('addTodoModal').style.display = 'block'; 
-            document.getElementById('todoInput').focus(); 
+        window.openAddTodoModal = function () {
+            document.getElementById('addTodoModal').style.display = 'block';
+            populateProjectDropdown('addTodoProjectDropdown', 'todoProjectInput');
+            document.getElementById('todoInput').focus();
         }
-        window.closeAddTodoModal = function() { document.getElementById('addTodoModal').style.display = 'none'; }
+        window.closeAddTodoModal = function () { document.getElementById('addTodoModal').style.display = 'none'; }
 
-        window.openAddQuestionModal = function() { 
-            document.getElementById('addQuestionModal').style.display = 'block'; 
-            document.getElementById('questionInput').focus(); 
+        window.openAddQuestionModal = function () {
+            document.getElementById('addQuestionModal').style.display = 'block';
+            document.getElementById('questionInput').focus();
         }
-        window.closeAddQuestionModal = function() { document.getElementById('addQuestionModal').style.display = 'none'; }
+        window.closeAddQuestionModal = function () { document.getElementById('addQuestionModal').style.display = 'none'; }
 
         function addDailyPlan() {
             const input = document.getElementById('planInput');
             const text = input.value.trim();
             if (!text) { alert("请输入规划内容"); return; }
-            window.dailyPlans.push({ 
-                id: Date.now(), 
-                content: text, 
-                description: '', 
-                completed: false, 
-                createdAt: new Date().toISOString() 
+            window.dailyPlans.push({
+                id: Date.now(),
+                content: text,
+                description: '',
+                completed: false,
+                createdAt: new Date().toISOString()
             });
-            input.value = ''; 
+            input.value = '';
             updatePlanList();
             closeAddPlanModal(); // 新增：关闭模态框
-            triggerSync(); 
+            triggerSync();
         }
 
-        window.movePlan = function(id, direction) {
+        window.movePlan = function (id, direction) {
             const index = window.dailyPlans.findIndex(p => p.id === id);
             if (index === -1) return;
-            
+
             if (direction === -1 && index > 0) {
-                [window.dailyPlans[index], window.dailyPlans[index-1]] = [window.dailyPlans[index-1], window.dailyPlans[index]];
-            } 
-            else if (direction === 1 && index < window.dailyPlans.length - 1) {
-                [window.dailyPlans[index], window.dailyPlans[index+1]] = [window.dailyPlans[index+1], window.dailyPlans[index]];
+                [window.dailyPlans[index], window.dailyPlans[index - 1]] = [window.dailyPlans[index - 1], window.dailyPlans[index]];
             }
-            
+            else if (direction === 1 && index < window.dailyPlans.length - 1) {
+                [window.dailyPlans[index], window.dailyPlans[index + 1]] = [window.dailyPlans[index + 1], window.dailyPlans[index]];
+            }
+
             updatePlanList();
             triggerSync();
         }
@@ -2117,11 +2899,11 @@
         function updatePlanList() {
             const listEl = document.getElementById('planList');
             if (window.dailyPlans.length === 0) { listEl.innerHTML = '<div class="no-records">暂无规划</div>'; return; }
-            
+
             listEl.innerHTML = window.dailyPlans.map((item, index) => {
                 const isFirst = index === 0;
                 const isLast = index === window.dailyPlans.length - 1;
-                
+
                 return `
                 <div class="plan-item ${item.completed ? 'completed' : ''}">
                     <div class="plan-reorder">
@@ -2143,8 +2925,8 @@
                 </div>`;
             }).join('');
         }
-        
-        window.openPlanDescModal = function(id) {
+
+        window.openPlanDescModal = function (id) {
             const plan = window.dailyPlans.find(p => p.id === id);
             if (!plan) return;
             currentPlanEditId = id;
@@ -2152,18 +2934,18 @@
             document.getElementById('editPlanDesc').value = plan.description || '';
             document.getElementById('planDescModal').style.display = 'block';
         }
-        
-        window.closePlanDescModal = function() {
+
+        window.closePlanDescModal = function () {
             document.getElementById('planDescModal').style.display = 'none';
             currentPlanEditId = null;
         }
-        
-        window.savePlanDesc = function() {
+
+        window.savePlanDesc = function () {
             const plan = window.dailyPlans.find(p => p.id === currentPlanEditId);
             if (plan) {
                 const newContent = document.getElementById('editPlanContent').value.trim();
-                if(!newContent) { alert("规划内容不能为空"); return; }
-                
+                if (!newContent) { alert("规划内容不能为空"); return; }
+
                 plan.content = newContent;
                 plan.description = document.getElementById('editPlanDesc').value.trim();
                 updatePlanList();
@@ -2179,27 +2961,27 @@
             document.getElementById('taskInput').value = plan.content;
             window.currentPlanId = id; startTask();
         }
-        
+
         // 修改：点击开始执行时，直接从待办列表中移除该项
-        window.startFromTodo = function(id) {
+        window.startFromTodo = function (id) {
             if (window.currentTask) { alert("当前已有任务，请先完成或暂停！"); return; }
-            
+
             // 找到任务索引
             const index = window.todos.findIndex(t => t.id === id);
             if (index === -1) return;
-            
+
             const todo = window.todos[index];
-            
+
             // 设置当前任务名称
             document.getElementById('taskInput').value = todo.text;
-            
+
             // 立即从待办列表中删除
             window.todos.splice(index, 1);
             updateTodoList();
 
             // 由于已删除，不需要再设置 currentTodoId 来标记完成状态
             window.currentTodoId = null;
-            
+
             // 开始任务
             startTask();
         }
@@ -2208,17 +2990,17 @@
             const idx = window.dailyPlans.findIndex(p => p.id === id);
             if (idx === -1) return;
             const plan = window.dailyPlans[idx];
-            window.todos.push({ 
-                id: Date.now(), 
-                text: plan.content, 
-                subtitle: plan.description ? `(来自规划) ${plan.description}` : "来自规划迁移", 
-                completed: false, 
-                deadline: new Date().toISOString().split('T')[0], 
-                createdAt: new Date().toISOString() 
+            window.todos.push({
+                id: Date.now(),
+                text: plan.content,
+                subtitle: plan.description ? `(来自规划) ${plan.description}` : "来自规划迁移",
+                completed: false,
+                deadline: new Date().toISOString().split('T')[0],
+                createdAt: new Date().toISOString()
             });
             window.dailyPlans.splice(idx, 1);
             refreshAllUI();
-            triggerSync(); 
+            triggerSync();
         }
 
         function startTask() {
@@ -2250,15 +3032,15 @@
         }
 
         // 修改：这里只更新本地变量，不触发同步
-        window.updateLocalDesc = function(val) {
+        window.updateLocalDesc = function (val) {
             window.currentTaskDescription = val;
         }
 
         // 新增：手动保存按钮触发同步
-        window.saveCurrentTaskDesc = function() {
+        window.saveCurrentTaskDesc = function () {
             triggerSync();
             const msg = document.getElementById('manualSaveMsg');
-            if(msg) {
+            if (msg) {
                 msg.style.opacity = 1;
                 setTimeout(() => msg.style.opacity = 0, 2000);
             }
@@ -2267,22 +3049,22 @@
         function stopTask() {
             clearInterval(window.timerInterval);
             const duration = window.pausedTime || (Date.now() - window.startTime);
-            
+
             const description = window.currentTaskDescription || '';
-            
-            window.records.push({ 
-                task: window.currentTask, 
-                duration: duration, 
-                timestamp: new Date(), 
-                description: description 
+
+            window.records.push({
+                task: window.currentTask,
+                duration: duration,
+                timestamp: new Date(),
+                description: description
             });
-            
+
             if (window.currentPlanId) {
                 const plan = window.dailyPlans.find(p => p.id === window.currentPlanId);
                 if (plan) plan.completed = true;
                 window.currentPlanId = null;
             }
-            
+
             if (window.currentTodoId) {
                 const todo = window.todos.find(t => t.id === window.currentTodoId);
                 if (todo) todo.completed = true;
@@ -2291,7 +3073,7 @@
 
             refreshAllUI();
             resetTask();
-            triggerSync(); 
+            triggerSync();
         }
 
         // 暂停/继续任务
@@ -2314,11 +3096,11 @@
         }
 
         function resetTask() {
-            window.currentTask = null; 
+            window.currentTask = null;
             window.currentTaskDescription = "";
-            window.startTime = null; 
-            window.pausedTime = 0; 
-            window.isPaused = false; 
+            window.startTime = null;
+            window.pausedTime = 0;
+            window.isPaused = false;
             window.currentPlanId = null;
             window.currentTodoId = null;
             updateTimerUI(false);
@@ -2350,7 +3132,7 @@
             }
         }
 
-        window.updateTimer = function() {
+        window.updateTimer = function () {
             if (!window.startTime) return;
             const elapsed = Date.now() - window.startTime;
             document.getElementById('timer').textContent = formatDuration(elapsed);
@@ -2368,20 +3150,20 @@
 
                 window.questions = data.questions || [];
                 window.dailyPlans = data.dailyPlans || [];
-                
+
                 if (!clearRecords) {
                     window.records = (data.records || []).map(r => {
                         const d = new Date(r.timestamp);
                         return { ...r, timestamp: isNaN(d.getTime()) ? new Date() : d };
                     });
                     window.currentTask = data.currentTask;
-                    window.currentTaskDescription = data.currentTaskDescription || ""; 
+                    window.currentTaskDescription = data.currentTaskDescription || "";
                     window.currentPlanId = data.currentPlanId || null;
                     window.currentTodoId = data.currentTodoId || null;
                     window.startTime = data.startTime;
                     window.pausedTime = data.pausedTime;
                     window.isPaused = data.isPaused;
-                    
+
                     if (window.currentTask) {
                         updateTimerUI(true);
                         const descInput = document.getElementById('currentTaskDescInput');
@@ -2401,15 +3183,15 @@
                 refreshAllUI();
                 closeImportModal();
                 updateSaveStatus('✅ 数据导入成功！');
-                triggerSync(); 
+                triggerSync();
             } catch (err) { alert("导入错误：" + err.message); }
         }
-        
+
         function loadFromFile(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 try { pendingImportData = JSON.parse(e.target.result); document.getElementById('importModal').style.display = 'block'; }
                 catch (error) { alert('文件格式错误'); }
             };
@@ -2425,32 +3207,135 @@
             const s = Math.floor((ms % 60000) / 1000).toString().padStart(2, '0');
             return `${h}:${m}:${s}`;
         }
-        
+
+        // === 项目下拉框辅助函数 ===
+        // 获取已存在的所有项目名称（去重）
+        function getExistingProjects() {
+            const projects = new Set();
+            (window.todos || []).forEach(t => {
+                if (t.project && t.project.trim()) projects.add(t.project.trim());
+            });
+            return Array.from(projects).sort((a, b) => a.localeCompare(b, 'zh-CN'));
+        }
+
+        // 填充下拉列表
+        function populateProjectDropdown(dropdownId, inputId) {
+            const dropdown = document.getElementById(dropdownId);
+            const input = document.getElementById(inputId);
+            const projects = getExistingProjects();
+            const filter = (input.value || '').trim().toLowerCase();
+
+            const folderIcon = `<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
+
+            // 过滤匹配项
+            const filtered = filter
+                ? projects.filter(p => p.toLowerCase().includes(filter))
+                : projects;
+
+            if (filtered.length === 0) {
+                dropdown.innerHTML = `<div class="project-combobox-empty">${projects.length === 0 ? '暂无已创建的项目，可直接输入新项目名称' : '无匹配项目，可继续输入自定义名称'}</div>`;
+            } else {
+                dropdown.innerHTML = filtered.map(p =>
+                    `<div class="project-combobox-option" onclick="selectProject('${p.replace(/'/g, "\\'")}', '${inputId}', '${dropdownId}')">${folderIcon}<span>${p}</span></div>`
+                ).join('');
+            }
+        }
+
+        // 切换下拉显示
+        function toggleProjectDropdown(comboboxId) {
+            const combobox = document.getElementById(comboboxId);
+            const dropdown = combobox.querySelector('.project-combobox-dropdown');
+            const toggle = combobox.querySelector('.combobox-toggle');
+            const input = combobox.querySelector('input');
+            const isOpen = dropdown.classList.contains('show');
+
+            if (isOpen) {
+                dropdown.classList.remove('show');
+                toggle.classList.remove('open');
+            } else {
+                // 先刷新列表内容
+                populateProjectDropdown(dropdown.id, input.id);
+                dropdown.classList.add('show');
+                toggle.classList.add('open');
+            }
+        }
+
+        // 关闭下拉
+        function closeProjectDropdown(comboboxId) {
+            const combobox = document.getElementById(comboboxId);
+            if (!combobox) return;
+            const dropdown = combobox.querySelector('.project-combobox-dropdown');
+            const toggle = combobox.querySelector('.combobox-toggle');
+            if (dropdown) dropdown.classList.remove('show');
+            if (toggle) toggle.classList.remove('open');
+        }
+
+        // 选择项目
+        function selectProject(projectName, inputId, dropdownId) {
+            document.getElementById(inputId).value = projectName;
+            const comboboxId = document.getElementById(dropdownId).parentElement.id;
+            closeProjectDropdown(comboboxId);
+        }
+
+        // 输入框事件：边输入边过滤下拉内容
+        document.addEventListener('DOMContentLoaded', function () {
+            ['todoProjectInput', 'editTodoProject'].forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (!input) return;
+                const combobox = input.closest('.project-combobox');
+                const dropdown = combobox.querySelector('.project-combobox-dropdown');
+
+                input.addEventListener('input', function () {
+                    populateProjectDropdown(dropdown.id, inputId);
+                    if (!dropdown.classList.contains('show')) {
+                        dropdown.classList.add('show');
+                        combobox.querySelector('.combobox-toggle').classList.add('open');
+                    }
+                });
+
+                input.addEventListener('focus', function () {
+                    populateProjectDropdown(dropdown.id, inputId);
+                    dropdown.classList.add('show');
+                    combobox.querySelector('.combobox-toggle').classList.add('open');
+                });
+            });
+
+            // 点击外部关闭所有下拉
+            document.addEventListener('click', function (e) {
+                document.querySelectorAll('.project-combobox').forEach(cb => {
+                    if (!cb.contains(e.target)) {
+                        closeProjectDropdown(cb.id);
+                    }
+                });
+            });
+        });
+
         function addTodo() {
             const text = document.getElementById('todoInput').value.trim();
             if (!text) return alert('请输入内容');
-            
+
             // 获取项目输入
             const project = document.getElementById('todoProjectInput').value.trim();
 
-            window.todos.push({ 
-                id: Date.now(), 
-                text, 
-                subtitle: document.getElementById('todoSubtitleInput').value.trim(), 
-                completed: false, 
+            window.todos.push({
+                id: Date.now(),
+                text,
+                subtitle: document.getElementById('todoSubtitleInput').value.trim(),
+                completed: false,
                 deadline: document.getElementById('todoDeadline').value || null,
                 project: project // 存储项目字段
             });
-            document.getElementById('todoInput').value = ''; 
+            document.getElementById('todoInput').value = '';
             document.getElementById('todoSubtitleInput').value = '';
             // 清空项目输入框
-            document.getElementById('todoProjectInput').value = ''; 
+            document.getElementById('todoProjectInput').value = '';
+            closeProjectDropdown('addTodoCombobox');
             // 清空截止日期
             document.getElementById('todoDeadline').value = '';
-            
+
             updateTodoList();
             closeAddTodoModal(); // 新增：关闭模态框
-            triggerSync(); 
+            triggerSync();
         }
         // 修复：待办勾选后的同步问题
         // 问题：勾选后页面消失，但刷新后任务又回来了（删除操作未成功保存到云端）
@@ -2458,7 +3343,7 @@
         // 解决：改为 async/await 模式，确保每一步都同步完成后再执行下一步
         async function toggleTodo(id) {
             const t = window.todos.find(x => x.id === id);
-            if(t) {
+            if (t) {
                 // 1. 先标记为已完成
                 t.completed = !t.completed;
                 updateTodoList();
@@ -2467,7 +3352,7 @@
                 await triggerSync();
 
                 // 3. 如果是勾选完成，500ms 后执行删除操作
-                if(t.completed) {
+                if (t.completed) {
                     setTimeout(async () => {
                         // 从数组中移除已完成的任务
                         window.todos = window.todos.filter(x => x.id !== id);
@@ -2481,41 +3366,41 @@
         }
 
         // 新增：切换分组折叠状态
-        window.toggleTodoGroup = function(groupKey) {
+        window.toggleTodoGroup = function (groupKey) {
             window.todoGroupStates[groupKey] = !window.todoGroupStates[groupKey];
             updateTodoList();
         }
 
         function updateTodoList() {
             const list = document.getElementById('todoList');
-            if(window.todos.length===0) return list.innerHTML = '<div class="no-records">暂无待办</div>';
-            
+            if (window.todos.length === 0) return list.innerHTML = '<div class="no-records">暂无待办</div>';
+
             // 1. 分组逻辑
             const groups = {};
             const noProjectKey = '___uncategorized___';
-            
+
             window.todos.forEach(t => {
                 const p = t.project && t.project.trim() ? t.project.trim() : noProjectKey;
-                if(!groups[p]) groups[p] = [];
+                if (!groups[p]) groups[p] = [];
                 groups[p].push(t);
             });
-            
+
             // 2. 排序分组：有项目的按名称排，无项目的放最后
-            let groupKeys = Object.keys(groups).sort((a,b) => a.localeCompare(b, 'zh-CN'));
-            if(groupKeys.includes(noProjectKey)) {
+            let groupKeys = Object.keys(groups).sort((a, b) => a.localeCompare(b, 'zh-CN'));
+            if (groupKeys.includes(noProjectKey)) {
                 groupKeys = groupKeys.filter(k => k !== noProjectKey).concat([noProjectKey]);
             }
-            
+
             // 3. 生成 HTML
             let html = '';
             const showHeaders = groupKeys.length > 1 || groupKeys[0] !== noProjectKey;
-            
+
             const iconFolder = `<svg class="group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
             const iconInbox = `<svg class="group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>`;
 
             groupKeys.forEach(key => {
                 let items = groups[key];
-                if(items.length === 0) return;
+                if (items.length === 0) return;
 
                 // ** 新增：组内排序 (截止日期近的在前) **
                 items.sort((a, b) => {
@@ -2527,16 +3412,16 @@
                     if (b.deadline) return 1;
                     return 0;
                 });
-                
+
                 // ** 新增：获取折叠状态 **
                 const isCollapsed = window.todoGroupStates[key] || false;
                 const collapseIcon = isCollapsed ? '▶' : '▼';
 
-                if(showHeaders) {
+                if (showHeaders) {
                     const icon = key === noProjectKey ? iconInbox : iconFolder;
                     const name = key === noProjectKey ? '未分类' : key;
                     const title = `${icon} ${name}`;
-                    
+
                     // ** 修改：增加点击事件和折叠图标 **
                     html += `<div class="todo-group-title" onclick="toggleTodoGroup('${key.replace(/'/g, "\\'")}')">
                                 <span class="collapse-icon">${collapseIcon}</span>
@@ -2544,7 +3429,7 @@
                                 <span style="font-weight:normal; opacity:0.5; margin-left:6px; font-size:12px;">${items.length}</span>
                              </div>`;
                 }
-                
+
                 // ** 新增：如果折叠了，就不渲染下面的 items **
                 if (!isCollapsed) {
                     html += items.map(t => {
@@ -2552,11 +3437,11 @@
                         const dateDisplay = t.deadline ? t.deadline.slice(2) : '';
 
                         return `
-                        <div class="todo-item ${t.completed?'completed':''}">
+                        <div class="todo-item ${t.completed ? 'completed' : ''}">
                             <div class="todo-header">
-                                <input type="checkbox" class="todo-checkbox" ${t.completed?'checked':''} onchange="toggleTodo(${t.id})">
+                                <input type="checkbox" class="todo-checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo(${t.id})">
                                 <div class="todo-content" onclick="openTodoEditModal(${t.id})">
-                                    <div class="todo-text">${t.text}</div> ${t.subtitle?`<div class="todo-subtitle">${t.subtitle}</div>`:''}
+                                    <div class="todo-text">${t.text}</div> ${t.subtitle ? `<div class="todo-subtitle">${t.subtitle}</div>` : ''}
                                     
                                     <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px; min-height: 20px;">
                                         ${dateDisplay ? `<div class="todo-deadline" style="margin-top: 0;">${dateDisplay}</div>` : '<span></span>'}
@@ -2573,51 +3458,52 @@
                     }).join('');
                 }
             });
-            
+
             list.innerHTML = html;
         }
-        
-        function openTodoEditModal(id) { 
-            currentTodoId = id; 
-            const t = window.todos.find(x=>x.id===id); 
-            if(t){ 
-                document.getElementById('editTodoText').value=t.text; 
-                document.getElementById('editTodoSubtitle').value=t.subtitle||''; 
-                document.getElementById('editTodoDeadline').value=t.deadline||''; 
-                document.getElementById('editTodoProject').value=t.project||''; // 加载项目数据
-                document.getElementById('todoEditModal').style.display='block'; 
-            }
-        }
-        
-        function closeTodoEditModal() { document.getElementById('todoEditModal').style.display='none'; currentTodoId=null; }
-        
-        function saveTodoEdit() { 
-            const t = window.todos.find(x=>x.id===currentTodoId); 
-            if(t){ 
-                t.text=document.getElementById('editTodoText').value; 
-                t.subtitle=document.getElementById('editTodoSubtitle').value; 
-                t.deadline=document.getElementById('editTodoDeadline').value; 
-                t.project=document.getElementById('editTodoProject').value.trim(); // 保存项目数据
-                updateTodoList(); 
-                closeTodoEditModal(); 
-                triggerSync(); 
+
+        function openTodoEditModal(id) {
+            currentTodoId = id;
+            const t = window.todos.find(x => x.id === id);
+            if (t) {
+                document.getElementById('editTodoText').value = t.text;
+                document.getElementById('editTodoSubtitle').value = t.subtitle || '';
+                document.getElementById('editTodoDeadline').value = t.deadline || '';
+                document.getElementById('editTodoProject').value = t.project || ''; // 加载项目数据
+                populateProjectDropdown('editTodoProjectDropdown', 'editTodoProject');
+                document.getElementById('todoEditModal').style.display = 'block';
             }
         }
 
-        function addQuestion() { 
-            const v = document.getElementById('questionInput').value.trim(); 
-            if(!v) return alert('请输入内容'); 
-            window.questions.push({id:Date.now(), question:v, answer:'', answered:false}); 
-            document.getElementById('questionInput').value=''; 
-            updateQuestionList(); 
+        function closeTodoEditModal() { document.getElementById('todoEditModal').style.display = 'none'; currentTodoId = null; }
+
+        function saveTodoEdit() {
+            const t = window.todos.find(x => x.id === currentTodoId);
+            if (t) {
+                t.text = document.getElementById('editTodoText').value;
+                t.subtitle = document.getElementById('editTodoSubtitle').value;
+                t.deadline = document.getElementById('editTodoDeadline').value;
+                t.project = document.getElementById('editTodoProject').value.trim(); // 保存项目数据
+                updateTodoList();
+                closeTodoEditModal();
+                triggerSync();
+            }
+        }
+
+        function addQuestion() {
+            const v = document.getElementById('questionInput').value.trim();
+            if (!v) return alert('请输入内容');
+            window.questions.push({ id: Date.now(), question: v, answer: '', answered: false });
+            document.getElementById('questionInput').value = '';
+            updateQuestionList();
             closeAddQuestionModal(); // 新增：关闭模态框
-            triggerSync(); 
+            triggerSync();
         }
 
         function updateQuestionList() {
             const list = document.getElementById('questionList');
-            if(window.questions.length === 0) return list.innerHTML = '<div class="no-records">暂无灵感</div>';
-            
+            if (window.questions.length === 0) return list.innerHTML = '<div class="no-records">暂无灵感</div>';
+
             list.innerHTML = window.questions.map(q => `
                 <div class="question-item ${q.answered ? 'answered' : ''}">
                     <div class="question-content" onclick="openAnswerModal(${q.id})">
@@ -2631,8 +3517,8 @@
             `).join('');
         }
 
-        window.sendToFlomo = function(event, id) {
-            if(event) event.stopPropagation();
+        window.sendToFlomo = function (event, id) {
+            if (event) event.stopPropagation();
 
             const q = window.questions.find(x => x.id === id);
             if (!q) return;
@@ -2645,27 +3531,27 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: contentToSend })
             })
-            .then(response => {
-                if (response.ok) {
-                    alert("✅ 已成功发送到 Flomo！");
-                } else {
-                    alert("❌ 发送失败，请检查网络或 API 地址。");
-                    console.error("Flomo Error:", response);
-                }
-            })
-            .catch(error => {
-                alert("❌ 发送出错：" + error.message);
-                console.error("Flomo Fetch Error:", error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        alert("✅ 已成功发送到 Flomo！");
+                    } else {
+                        alert("❌ 发送失败，请检查网络或 API 地址。");
+                        console.error("Flomo Error:", response);
+                    }
+                })
+                .catch(error => {
+                    alert("❌ 发送出错：" + error.message);
+                    console.error("Flomo Fetch Error:", error);
+                });
         }
-        
-        window.sendRecordToFlomo = function() {
+
+        window.sendRecordToFlomo = function () {
             if (currentRecordIndex === null) return;
             const r = window.records[currentRecordIndex];
             const currentDesc = document.getElementById('descInput').value || '（无复盘内容）';
-            
+
             const contentToSend = `#任务复盘\n\n✅ 任务：${r.task}\n⏱️ 耗时：${formatDuration(r.duration)}\n\n📝 复盘/备注：\n${currentDesc}`;
-            
+
             const webhookUrl = "https://flomoapp.com/iwh/MjMyNTE1/896a528a72e341a87584f81234f5d2eb/";
 
             fetch(webhookUrl, {
@@ -2673,30 +3559,30 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: contentToSend })
             })
-            .then(response => {
-                if (response.ok) {
-                    window.records.splice(currentRecordIndex, 1);
-                    updateRecordsList();
-                    closeDescModal();
-                    triggerSync();
-                    alert("✅ 已发送到 Flomo 并归档（删除）！");
-                } else {
-                    alert("❌ 发送失败，请检查网络。");
-                }
-            })
-            .catch(error => {
-                alert("❌ 发送出错：" + error.message);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        window.records.splice(currentRecordIndex, 1);
+                        updateRecordsList();
+                        closeDescModal();
+                        triggerSync();
+                        alert("✅ 已发送到 Flomo 并归档（删除）！");
+                    } else {
+                        alert("❌ 发送失败，请检查网络。");
+                    }
+                })
+                .catch(error => {
+                    alert("❌ 发送出错：" + error.message);
+                });
         }
 
-        function deleteQuestion(id) { if(confirm('删除?')) { window.questions=window.questions.filter(q=>q.id!==id); updateQuestionList(); triggerSync(); } }
-        function openAnswerModal(id) { currentQuestionId=id; const q=window.questions.find(x=>x.id===id); if(q){ document.getElementById('modalQuestionText').textContent=q.question; document.getElementById('answerInput').value=q.answer||''; document.getElementById('answerModal').style.display='block'; }}
-        function closeAnswerModal() { document.getElementById('answerModal').style.display='none'; currentQuestionId=null; }
-        function saveAnswer() { const q=window.questions.find(x=>x.id===currentQuestionId); if(q){ q.answer=document.getElementById('answerInput').value; q.answered=!!q.answer; updateQuestionList(); closeAnswerModal(); triggerSync(); }}
+        function deleteQuestion(id) { if (confirm('删除?')) { window.questions = window.questions.filter(q => q.id !== id); updateQuestionList(); triggerSync(); } }
+        function openAnswerModal(id) { currentQuestionId = id; const q = window.questions.find(x => x.id === id); if (q) { document.getElementById('modalQuestionText').textContent = q.question; document.getElementById('answerInput').value = q.answer || ''; document.getElementById('answerModal').style.display = 'block'; } }
+        function closeAnswerModal() { document.getElementById('answerModal').style.display = 'none'; currentQuestionId = null; }
+        function saveAnswer() { const q = window.questions.find(x => x.id === currentQuestionId); if (q) { q.answer = document.getElementById('answerInput').value; q.answered = !!q.answer; updateQuestionList(); closeAnswerModal(); triggerSync(); } }
 
         function updateRecordsList() {
             const list = document.getElementById('recordsList');
-            if(window.records.length===0) return list.innerHTML = '<div class="no-records">无记录</div>';
+            if (window.records.length === 0) return list.innerHTML = '<div class="no-records">无记录</div>';
             list.innerHTML = window.records.slice().reverse().map((r, i) => {
                 let timeStr = '';
                 try {
@@ -2709,7 +3595,7 @@
                 } catch (e) { console.error(e); }
 
                 return `
-                <div class="record-item" onclick="openDescModal(${window.records.length-1-i})" style="cursor: pointer;">
+                <div class="record-item" onclick="openDescModal(${window.records.length - 1 - i})" style="cursor: pointer;">
                     <div class="record-header">
                         <div>
                             <div class="record-task">${r.task}</div>
@@ -2717,21 +3603,21 @@
                         </div>
                         <div class="record-time">${formatDuration(r.duration)}</div>
                     </div>
-                    ${r.description?`<div class="record-desc">${r.description}</div>`:''}
+                    ${r.description ? `<div class="record-desc">${r.description}</div>` : ''}
                 </div>`;
             }).join('');
         }
-        function openDescModal(idx) { currentRecordIndex=idx; document.getElementById('modalRecordTask').textContent=window.records[idx].task; document.getElementById('descInput').value=window.records[idx].description||''; document.getElementById('descModal').style.display='block'; }
-        function closeDescModal() { document.getElementById('descModal').style.display='none'; currentRecordIndex=null; }
-        function saveDescription() { if(currentRecordIndex!==null) { window.records[currentRecordIndex].description=document.getElementById('descInput').value; updateRecordsList(); closeDescModal(); triggerSync(); }}
+        function openDescModal(idx) { currentRecordIndex = idx; document.getElementById('modalRecordTask').textContent = window.records[idx].task; document.getElementById('descInput').value = window.records[idx].description || ''; document.getElementById('descModal').style.display = 'block'; }
+        function closeDescModal() { document.getElementById('descModal').style.display = 'none'; currentRecordIndex = null; }
+        function saveDescription() { if (currentRecordIndex !== null) { window.records[currentRecordIndex].description = document.getElementById('descInput').value; updateRecordsList(); closeDescModal(); triggerSync(); } }
 
         function exportToExcel() {
             if (window.records.length === 0) return;
-            
+
             const data = window.records.map((r, i) => {
                 let startStr = '--:--';
                 let endStr = '--:--';
-                
+
                 try {
                     const end = r.timestamp instanceof Date ? r.timestamp : new Date(r.timestamp);
                     if (!isNaN(end.getTime())) {
@@ -2757,8 +3643,8 @@
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, '工作记录');
-            
-            const dateStr = new Date().toISOString().slice(0,10);
+
+            const dateStr = new Date().toISOString().slice(0, 10);
             XLSX.writeFile(wb, `Report_${dateStr}.xlsx`);
         }
         // 统一弹窗点击空白关闭行为
@@ -2771,82 +3657,82 @@
     </script>
 
     <script type="module">
-      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-      // 安全说明：禁止在前端直接放 LLM API_KEY
-      // 正确做法：前端只调用 Supabase Edge Function，真正的 AI 密钥放到 Function Secrets
+        // 安全说明：禁止在前端直接放 LLM API_KEY
+        // 正确做法：前端只调用 Supabase Edge Function，真正的 AI 密钥放到 Function Secrets
 
-      const SUPABASE_URL = "https://ynkxpjmpazmjdjtwpggq.supabase.co";
-      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlua3hwam1wYXptamRqdHdwZ2dxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MjExODEsImV4cCI6MjA4MjQ5NzE4MX0.WHgycb5URS_bzsO6WAgHHrDRAMVKOrnDhTlX7ELvo4w";
+        const SUPABASE_URL = "https://ynkxpjmpazmjdjtwpggq.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlua3hwam1wYXptamRqdHdwZ2dxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MjExODEsImV4cCI6MjA4MjQ5NzE4MX0.WHgycb5URS_bzsO6WAgHHrDRAMVKOrnDhTlX7ELvo4w";
 
-      // 提供给普通脚本使用的全局配置（AI 模块通过它调用 Edge Function）
-      window.__supabaseUrl = SUPABASE_URL;
-      window.__supabaseAnonKey = SUPABASE_KEY;
-      
-      const TABLE_NAME = "time_tracker_cloud";
-      const ROW_ID = "my_daily_data"; 
+        // 提供给普通脚本使用的全局配置（AI 模块通过它调用 Edge Function）
+        window.__supabaseUrl = SUPABASE_URL;
+        window.__supabaseAnonKey = SUPABASE_KEY;
 
-      let isDataLoaded = false;
+        const TABLE_NAME = "time_tracker_cloud";
+        const ROW_ID = "my_daily_data";
 
-      try {
-          const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        let isDataLoaded = false;
 
-          window.saveToCloud = async function() {
-            if (!isDataLoaded) {
-                console.warn("云端数据尚未加载，跳过保存操作。");
-                return;
-            }
+        try {
+            const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            document.getElementById('saveStatus').textContent = '⏳ 同步中...';
-            
-            const safeDate = (d) => {
-                if (d instanceof Date) return isNaN(d) ? new Date().toISOString() : d.toISOString();
-                if (!d) return new Date().toISOString();
-                const t = new Date(d);
-                return isNaN(t) ? new Date().toISOString() : t.toISOString();
-            };
-
-            const fullData = {
-                records: (window.records || []).map(r => ({ ...r, timestamp: safeDate(r.timestamp) })),
-                todos: (window.todos || []).map(t => ({ ...t, createdAt: safeDate(t.createdAt) })),
-                questions: (window.questions || []).map(q => ({ ...q, createdAt: safeDate(q.createdAt) })),
-                dailyPlans: (window.dailyPlans || []).map(p => ({ ...p, createdAt: safeDate(p.createdAt) })), 
-                currentTask: window.currentTask || null,
-                currentTaskDescription: window.currentTaskDescription || "", 
-                currentPlanId: window.currentPlanId || null, 
-                currentTodoId: window.currentTodoId || null,
-                startTime: window.startTime || null,
-                pausedTime: window.pausedTime || 0,
-                isPaused: window.isPaused || false,
-                lastUpdated: new Date().toISOString()
-            };
-
-            const payload = {
-                id: ROW_ID,
-                data: fullData
-            };
-
-            try {
-                const { error } = await supabase
-                    .from(TABLE_NAME)
-                    .upsert(payload);
-                
-                if (error) {
-                    console.error("Supabase Save Error Details:", error);
-                    throw error;
+            window.saveToCloud = async function () {
+                if (!isDataLoaded) {
+                    console.warn("云端数据尚未加载，跳过保存操作。");
+                    return;
                 }
-                document.getElementById('saveStatus').textContent = '☁️ 已同步';
-            } catch (e) {
-                alert("❌ 同步失败：\n" + (e.message || JSON.stringify(e)));
-                document.getElementById('saveStatus').textContent = '❌ 同步失败';
-            }
-          };
 
-          // 修复：加载数据时的清理逻辑
-          // 问题：页面刷新后，已勾选但未删除的任务会残留在列表中
-          // 原因：toggleTodo 有 500ms 延迟删除，如果期间刷新页面，completed=true 的任务会被重新加载
-          // 解决：在数据加载时自动过滤掉所有 completed=true 的待办任务
-          function handleDataLoad(fetchedData) {
+                document.getElementById('saveStatus').textContent = '⏳ 同步中...';
+
+                const safeDate = (d) => {
+                    if (d instanceof Date) return isNaN(d) ? new Date().toISOString() : d.toISOString();
+                    if (!d) return new Date().toISOString();
+                    const t = new Date(d);
+                    return isNaN(t) ? new Date().toISOString() : t.toISOString();
+                };
+
+                const fullData = {
+                    records: (window.records || []).map(r => ({ ...r, timestamp: safeDate(r.timestamp) })),
+                    todos: (window.todos || []).map(t => ({ ...t, createdAt: safeDate(t.createdAt) })),
+                    questions: (window.questions || []).map(q => ({ ...q, createdAt: safeDate(q.createdAt) })),
+                    dailyPlans: (window.dailyPlans || []).map(p => ({ ...p, createdAt: safeDate(p.createdAt) })),
+                    currentTask: window.currentTask || null,
+                    currentTaskDescription: window.currentTaskDescription || "",
+                    currentPlanId: window.currentPlanId || null,
+                    currentTodoId: window.currentTodoId || null,
+                    startTime: window.startTime || null,
+                    pausedTime: window.pausedTime || 0,
+                    isPaused: window.isPaused || false,
+                    lastUpdated: new Date().toISOString()
+                };
+
+                const payload = {
+                    id: ROW_ID,
+                    data: fullData
+                };
+
+                try {
+                    const { error } = await supabase
+                        .from(TABLE_NAME)
+                        .upsert(payload);
+
+                    if (error) {
+                        console.error("Supabase Save Error Details:", error);
+                        throw error;
+                    }
+                    document.getElementById('saveStatus').textContent = '☁️ 已同步';
+                } catch (e) {
+                    alert("❌ 同步失败：\n" + (e.message || JSON.stringify(e)));
+                    document.getElementById('saveStatus').textContent = '❌ 同步失败';
+                }
+            };
+
+            // 修复：加载数据时的清理逻辑
+            // 问题：页面刷新后，已勾选但未删除的任务会残留在列表中
+            // 原因：toggleTodo 有 500ms 延迟删除，如果期间刷新页面，completed=true 的任务会被重新加载
+            // 解决：在数据加载时自动过滤掉所有 completed=true 的待办任务
+            function handleDataLoad(fetchedData) {
                 const loader = document.getElementById('loadingOverlay');
                 if (loader) {
                     loader.style.opacity = '0';
@@ -2868,7 +3754,7 @@
                     window.questions = data.questions || [];
                     window.dailyPlans = data.dailyPlans || [];
                     window.currentTask = data.currentTask;
-                    window.currentTaskDescription = data.currentTaskDescription || ""; 
+                    window.currentTaskDescription = data.currentTaskDescription || "";
                     window.currentPlanId = data.currentPlanId;
                     window.currentTodoId = data.currentTodoId;
                     window.startTime = data.startTime;
@@ -2876,27 +3762,27 @@
                     window.isPaused = data.isPaused;
 
                     if (window.refreshAllUI) window.refreshAllUI();
-                    
+
                     if (window.currentTask) {
                         if (window.timerInterval) clearInterval(window.timerInterval);
                         const currentTaskSection = document.getElementById('currentTaskSection');
                         if (currentTaskSection) currentTaskSection.style.display = 'block';
-                        
+
                         const currentTaskName = document.getElementById('currentTaskName');
                         if (currentTaskName) currentTaskName.textContent = window.currentTask;
-                        
+
                         const descInput = document.getElementById('currentTaskDescInput');
                         // 关键修改：如果当前用户焦点正在输入框中，不要覆盖 value，防止打字被打断
                         if (descInput && document.activeElement !== descInput) {
                             descInput.value = window.currentTaskDescription;
                         }
-                        
+
                         const taskInput = document.getElementById('taskInput');
                         if (taskInput) {
                             taskInput.value = window.currentTask;
                             taskInput.disabled = true;
                         }
-                        
+
                         const startBtn = document.getElementById('startBtn');
                         if (startBtn) startBtn.disabled = true;
                         const pauseBtn = document.getElementById('pauseBtn');
@@ -2906,62 +3792,63 @@
 
                         // 根据暂停状态更新按钮图标
                         if (!window.isPaused) {
-                             window.timerInterval = setInterval(window.updateTimer, 1000);
-                             updatePauseButtonIcon(false); // 显示暂停图标
+                            window.timerInterval = setInterval(window.updateTimer, 1000);
+                            updatePauseButtonIcon(false); // 显示暂停图标
                         } else {
                             updatePauseButtonIcon(true); // 显示播放图标（继续）
-                            if(window.updateTimer) window.updateTimer();
+                            if (window.updateTimer) window.updateTimer();
                         }
                     }
                     document.getElementById('saveStatus').textContent = '☁️ 已同步';
                 } else {
                     document.getElementById('saveStatus').textContent = '☁️ 就绪 (新数据)';
                 }
-          }
+            }
 
-          async function initData() {
-              try {
-                  const { data: row, error } = await supabase
-                    .from(TABLE_NAME)
-                    .select('*')
-                    .eq('id', ROW_ID)
-                    .single();
-                  
-                  if (error) {
-                      if (error.code !== 'PGRST116') {
-                          alert("❌ 数据加载失败：\n" + error.message);
-                      }
-                      handleDataLoad(null); 
-                  } else {
-                      handleDataLoad(row.data);
-                  }
-              } catch (err) {
-                   alert("❌ 连接错误：\n" + err.message);
-                   handleDataLoad(null); 
-              }
-          }
+            async function initData() {
+                try {
+                    const { data: row, error } = await supabase
+                        .from(TABLE_NAME)
+                        .select('*')
+                        .eq('id', ROW_ID)
+                        .single();
 
-          const channel = supabase.channel('time-tracker-realtime')
-            .on(
-                'postgres_changes',
-                { event: 'UPDATE', schema: 'public', table: TABLE_NAME, filter: `id=eq.${ROW_ID}` },
-                (payload) => {
-                    if (payload.new && payload.new.data) {
-                         handleDataLoad(payload.new.data);
+                    if (error) {
+                        if (error.code !== 'PGRST116') {
+                            alert("❌ 数据加载失败：\n" + error.message);
+                        }
+                        handleDataLoad(null);
+                    } else {
+                        handleDataLoad(row.data);
                     }
+                } catch (err) {
+                    alert("❌ 连接错误：\n" + err.message);
+                    handleDataLoad(null);
                 }
-            )
-            .subscribe();
+            }
 
-          initData();
+            const channel = supabase.channel('time-tracker-realtime')
+                .on(
+                    'postgres_changes',
+                    { event: 'UPDATE', schema: 'public', table: TABLE_NAME, filter: `id=eq.${ROW_ID}` },
+                    (payload) => {
+                        if (payload.new && payload.new.data) {
+                            handleDataLoad(payload.new.data);
+                        }
+                    }
+                )
+                .subscribe();
 
-      } catch (err) {
-          console.error("Supabase Init Error:", err);
-          document.getElementById('saveStatus').textContent = '❌ 连接失败';
-          const loader = document.getElementById('loadingOverlay');
-          if (loader) loader.style.display = 'none';
-          alert("❌ 初始化失败：" + err.message);
-      }
+            initData();
+
+        } catch (err) {
+            console.error("Supabase Init Error:", err);
+            document.getElementById('saveStatus').textContent = '❌ 连接失败';
+            const loader = document.getElementById('loadingOverlay');
+            if (loader) loader.style.display = 'none';
+            alert("❌ 初始化失败：" + err.message);
+        }
     </script>
 </body>
+
 </html>
