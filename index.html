@@ -112,12 +112,6 @@
             --btn-review-border: #d6bcfa;
             --btn-review-hover: #e9d8fd;
 
-            /* 3. 以终为始 (青色系 - 保持不变) */
-            --btn-fitness-bg: #e6fffa;
-            --btn-fitness-text: #2c7a7b;
-            --btn-fitness-border: #81e6d9;
-            --btn-fitness-hover: #b2f5ea;
-
             /* 4. 新增：数据操作按钮 (蓝色系 - 风格模仿今日结束) */
             --btn-data-bg: #ebf8ff;
             --btn-data-text: #2b6cb0;
@@ -181,11 +175,6 @@
             --btn-review-text: #D6BCFA;
             --btn-review-border: #553C9A;
             --btn-review-hover: rgba(118, 75, 162, 0.25);
-
-            --btn-fitness-bg: rgba(56, 178, 172, 0.15);
-            --btn-fitness-text: #81e6d9;
-            --btn-fitness-border: #285e61;
-            --btn-fitness-hover: rgba(56, 178, 172, 0.25);
 
             /* 数据按钮适配深色 */
             --btn-data-bg: rgba(66, 153, 225, 0.15);
@@ -348,7 +337,7 @@
            5. 顶部工具栏
            ────────────────────────────────────────────────
            包含：主题切换、数据加载/备份、AI 助手、
-           以终为始、今日复盘、今日结束等功能按钮
+           AI 助手、今日复盘、今日结束等功能按钮
            ──────────────────────────────────────────────── */
         .file-controls {
             display: flex;
@@ -493,30 +482,13 @@
             box-shadow: 0 4px 6px rgba(118, 75, 162, 0.2);
         }
 
-        /* 4. 以终为始按钮 */
-        .btn-fitness {
-            background: var(--btn-fitness-bg);
-            color: var(--btn-fitness-text);
-            border: 1px solid var(--btn-fitness-border);
-            box-shadow: 0 2px 4px rgba(56, 178, 172, 0.15);
-            margin-left: auto;
-            /* 靠右对齐 */
-        }
-
-        .btn-fitness:hover {
-            background: var(--btn-fitness-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(56, 178, 172, 0.2);
-        }
-
         /* 优化：顶部功能按钮统一图标与文字间距 */
-        .btn-fitness,
         .btn-daily-review,
         .btn-finish {
             gap: 6px;
         }
 
-        /* 5. 今日结束按钮 */
+        /* 4. 今日结束按钮 */
         .btn-finish {
             background: var(--btn-finish-bg);
             color: var(--btn-finish-text);
@@ -1722,7 +1694,6 @@
             .file-controls .btn-theme,
             .file-controls .btn-data,
             .file-controls .btn-ai,
-            .file-controls .btn-fitness,
             .file-controls .btn-daily-review,
             .file-controls .btn-finish {
                 width: 100%;
@@ -1845,7 +1816,7 @@
         ├── 页面标题 (h1)
         ├── 顶部工具栏 (.file-controls)
         │   ├── 主题切换、数据加载、本地备份
-        │   ├── AI 助手、以终为始、今日复盘、今日结束
+        │   ├── AI 助手、今日复盘、今日结束
         │   └── 系统时钟、同步状态指示器
         ├── 移动端导航 (#mobileSwiperViewport)
         └── 四列主布局 (#mainLayout)
@@ -1924,15 +1895,7 @@
                 <span>AI 助手</span>
             </button>
 
-            <button class="btn-fitness" onclick="window.open('https://liumaodou.xyz/vigor-tracker/', '_blank')">
-                <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
-                    <line x1="12" y1="1" x2="12" y2="23" />
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6" />
-                </svg>
-                <span>以终为始</span>
-            </button>
-
-            <button class="btn-daily-review" style="margin-left: 10px;" onclick="openDailyReviewModal()">
+            <button class="btn-daily-review" style="margin-left: auto;" onclick="openDailyReviewModal()">
                 <svg class="icon-lucide icon-lucide-sm" viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                     <line x1="16" y1="2" x2="16" y2="6" />
@@ -2229,7 +2192,7 @@
                 <label>洞察/解决方案：</label><textarea id="answerInput" placeholder="在这里深化您的思考..."></textarea>
             </div>
             <div class="modal-footer"><button class="btn-save-modal" onclick="closeAnswerModal()">取消</button><button
-                    class="btn-start" onclick="saveAnswer()">保存记录</button></div>
+                    class="btn-start" onclick="saveAnswer()">保存</button></div>
         </div>
     </div>
 
@@ -3732,6 +3695,7 @@
                 <div class="question-item ${q.answered ? 'answered' : ''}">
                     <div class="question-content" onclick="openAnswerModal(${q.id})">
                         <div class="question-text">${q.question}</div>
+                        ${q.answered && q.answer ? `<div class="question-answer" style="margin-top: 8px; font-size: 13px; color: var(--text-sub); border-left: 2px solid var(--primary-color); padding-left: 8px; white-space: pre-wrap;">${q.answer}</div>` : ''}
                     </div>
                     <div class="question-actions">
                         <button class="btn-small btn-flomo" onclick="sendToFlomo(event, ${q.id})">Flomo</button>
