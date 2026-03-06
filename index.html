@@ -2692,14 +2692,17 @@
 
                 let data;
                 try {
+                    // 尝试解析 AI 返回的 JSON
                     data = JSON.parse(contentText);
                 } catch (e) {
+                    // 如果解析失败，说明 AI 返回的不是纯 JSON，直接把它当普通消息显示
                     data = { message: contentText };
                 }
 
-                const message = data?.message || 'AI 已完成，但未返回文本。';
+                // 只提取 message 字段给用户看
+                const message = data.message || 'AI 任务已完成。';
 
-                // 4. 用真实回复替换“思考中”占位
+                // 4. 用提取的文本回复替换“思考中”占位
                 if (thinkingBubble) {
                     thinkingBubble.classList.remove('thinking');
                     thinkingBubble.textContent = message;
@@ -2708,8 +2711,8 @@
                 }
                 aiChatHistory.push({ role: 'assistant', content: message });
 
-                // 5. 如果返回 patch，自动应用并同步（chat 模式下不再额外点击确认）
-                if (data?.mode === 'preview_patch' && data?.patch && typeof data.patch === 'object') {
+                // 5. 如果返回 patch，自动应用并同步（不展示给用户）
+                if (data.mode === 'preview_patch' && data.patch && typeof data.patch === 'object') {
                     const patch = data.patch;
 
                     // 白名单写入：只允许核心字段
