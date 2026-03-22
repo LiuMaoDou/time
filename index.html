@@ -2365,6 +2365,10 @@
         // 待办事项折叠状态
         window.todoGroupStates = {};
 
+        // 页面级到期提醒去重集合
+        // 说明：仅在当前页面生命周期内去重，刷新页面后允许再次提醒。
+        const deadlineNotifiedIds = new Set();
+
         // 防抖函数定义：彻底解决输入时的高频同步抖动
         function debounce(func, wait) {
             let timeout;
@@ -2375,6 +2379,14 @@
             };
         }
 
+        // 获取本地日期字符串（YYYY-MM-DD）
+        // 说明：避免 toISOString() 使用 UTC 导致本地凌晨时段日期偏移。
+        function getLocalDateString(date = new Date()) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
         // 主题切换图标更新函数
         // 功能：根据当前主题在按钮中切换 Lucide 风格 moon/sun 图标
         // 亮色模式：显示 moon（提示可切换到暗色）
@@ -2689,7 +2701,80 @@
             updateSystemTime();
             setInterval(updateSystemTime, 1000);
             updateSaveStatus('连接中...');
+            // 每分钟检查一次到期提醒，避免跨天后仍需等待较长时间才触发提醒。
+            setInterval(checkDeadlineNotifications, 60 * 1000);
         });
+
+        // 检查待办截止日期，发送浏览器通知提醒
+        // 挂到 window 上，供模块脚本中的 handleDataLoad 调用
+        window.checkDeadlineNotifications = function checkDeadlineNotifications() {
+            const today = getLocalDateString();
+
+            // 同时覆盖“今天到期”和“已经逾期”的未完成待办。
+            const dueOrOverdue = (window.todos || []).filter(t => {
+                if (!t || !t.deadline || t.completed || deadlineNotifiedIds.has(t.id)) return false;
+                return t.deadline <= today;
+            });
+            if (dueOrOverdue.length === 0) return;
+
+            // 统一生成提醒文案，便于系统通知与 alert 兜底共用。
+            const notificationItems = dueOrOverdue.map(t => ({
+                id: t.id,
+                title: t.deadline < today ? '待办逾期提醒' : '待办到期提醒',
+                body: t.deadline < today
+                    ? `「${t.text}」已逾期（截止 ${t.deadline}）`
+                    : `「${t.text}」今天到期`
+            }));
+
+            // 页面内弹窗提示
+            // 说明：即使浏览器系统通知被吞掉，页面刷新后也能稳定看到提醒。
+            const showDeadlineAlert = () => {
+                alert(notificationItems.map(item => `${item.title}\n${item.body}`).join('\n\n'));
+            };
+
+            // 统一写入当前页面会话内的去重记录。
+            const markNotified = () => {
+                notificationItems.forEach(item => deadlineNotifiedIds.add(item.id));
+            };
+
+            // 如果系统通知不可用或被拒绝，退回到页面内 alert，至少保证能看到弹窗。
+            const notifyWithAlertFallback = () => {
+                showDeadlineAlert();
+                markNotified();
+            };
+
+            // 发送系统通知，同时保留页面内弹窗作为双保险。
+            const sendBrowserNotifications = () => {
+                notificationItems.forEach(item => {
+                    new Notification(item.title, { body: item.body });
+                });
+                showDeadlineAlert();
+                markNotified();
+            };
+
+            if (!('Notification' in window)) {
+                notifyWithAlertFallback();
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                sendBrowserNotifications();
+                return;
+            }
+
+            if (Notification.permission === 'default') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        sendBrowserNotifications();
+                    } else {
+                        notifyWithAlertFallback();
+                    }
+                });
+                return;
+            }
+
+            notifyWithAlertFallback();
+        }
 
         function updateSystemTime() {
             document.getElementById('sysClock').textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false });
@@ -3182,7 +3267,7 @@
                 text: plan.content,
                 subtitle: plan.description ? `(来自规划) ${plan.description}` : "来自规划迁移",
                 completed: false,
-                deadline: new Date().toISOString().split('T')[0],
+                deadline: getLocalDateString(),
                 createdAt: new Date().toISOString()
             });
             window.dailyPlans.splice(idx, 1);
@@ -3522,6 +3607,7 @@
 
             updateTodoList();
             closeAddTodoModal(); // 新增：关闭模态框
+            window.checkDeadlineNotifications();
             triggerSync();
         }
         // 修复：待办勾选后的同步问题
@@ -3619,12 +3705,16 @@
 
                 // ** 新增：如果折叠了，就不渲染下面的 items **
                 if (!isCollapsed) {
+                    // 获取今天日期（ISO格式，用于过期判断）
+                    const todayStr = getLocalDateString();
                     html += items.map(t => {
                         // ** 修改：日期格式化 (2025-12-19 -> 25-12-19) **
                         const dateDisplay = t.deadline ? t.deadline.slice(2) : '';
+                        // 判断是否已过期（截止日期早于今天且未完成）
+                        const isOverdue = t.deadline && t.deadline < todayStr && !t.completed;
 
                         return `
-                        <div class="todo-item ${t.completed ? 'completed' : ''}">
+                        <div class="todo-item ${t.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
                             <div class="todo-header">
                                 <input type="checkbox" class="todo-checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo(${t.id})">
                                 <div class="todo-content" onclick="openTodoEditModal(${t.id})">
@@ -3673,6 +3763,7 @@
                 t.project = document.getElementById('editTodoProject').value.trim(); // 保存项目数据
                 updateTodoList();
                 closeTodoEditModal();
+                window.checkDeadlineNotifications();
                 triggerSync();
             }
         }
@@ -3832,7 +3923,7 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, '工作记录');
 
-            const dateStr = new Date().toISOString().slice(0, 10);
+            const dateStr = getLocalDateString();
             XLSX.writeFile(wb, `Report_${dateStr}.xlsx`);
         }
         // 统一弹窗点击空白关闭行为
@@ -4001,6 +4092,8 @@
                 } else {
                     document.getElementById('saveStatus').textContent = '☁️ 就绪 (新数据)';
                 }
+                // 数据加载完成后检查到期提醒（此时 window.todos 已填充）
+                window.checkDeadlineNotifications();
             }
 
             async function initData() {
