@@ -2353,6 +2353,8 @@
         window.currentPlanId = null;
         window.currentTodoId = null;
 
+        // 区分正在执行的待办和正在编辑的待办，避免状态串用
+        let currentTodoEditId = null;
         let currentQuestionId = null;
         let currentRecordIndex = null;
         let currentPlanEditId = null;
@@ -3491,11 +3493,12 @@
         }
 
         // 填充下拉列表
-        function populateProjectDropdown(dropdownId, inputId) {
+        function populateProjectDropdown(dropdownId, inputId, forceShowAll = false) {
             const dropdown = document.getElementById(dropdownId);
             const input = document.getElementById(inputId);
             const projects = getExistingProjects();
-            const filter = (input.value || '').trim().toLowerCase();
+            // 打开下拉时优先展示全部项目，只有用户实际输入时才按关键字过滤
+            const filter = forceShowAll ? '' : (input.value || '').trim().toLowerCase();
 
             const folderIcon = `<svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`;
 
@@ -3526,7 +3529,7 @@
                 toggle.classList.remove('open');
             } else {
                 // 先刷新列表内容
-                populateProjectDropdown(dropdown.id, input.id);
+                populateProjectDropdown(dropdown.id, input.id, true);
                 dropdown.classList.add('show');
                 toggle.classList.add('open');
             }
@@ -3566,7 +3569,7 @@
                 });
 
                 input.addEventListener('focus', function () {
-                    populateProjectDropdown(dropdown.id, inputId);
+                    populateProjectDropdown(dropdown.id, inputId, true);
                     dropdown.classList.add('show');
                     combobox.querySelector('.combobox-toggle').classList.add('open');
                 });
@@ -3740,22 +3743,27 @@
         }
 
         function openTodoEditModal(id) {
-            currentTodoId = id;
+            // 编辑弹窗使用独立状态，避免覆盖运行中的待办标记
+            currentTodoEditId = id;
             const t = window.todos.find(x => x.id === id);
             if (t) {
                 document.getElementById('editTodoText').value = t.text;
                 document.getElementById('editTodoSubtitle').value = t.subtitle || '';
                 document.getElementById('editTodoDeadline').value = t.deadline || '';
                 document.getElementById('editTodoProject').value = t.project || ''; // 加载项目数据
-                populateProjectDropdown('editTodoProjectDropdown', 'editTodoProject');
+                populateProjectDropdown('editTodoProjectDropdown', 'editTodoProject', true);
                 document.getElementById('todoEditModal').style.display = 'block';
             }
         }
 
-        function closeTodoEditModal() { document.getElementById('todoEditModal').style.display = 'none'; currentTodoId = null; }
+        function closeTodoEditModal() {
+            document.getElementById('todoEditModal').style.display = 'none';
+            closeProjectDropdown('editTodoCombobox');
+            currentTodoEditId = null;
+        }
 
         function saveTodoEdit() {
-            const t = window.todos.find(x => x.id === currentTodoId);
+            const t = window.todos.find(x => x.id === currentTodoEditId);
             if (t) {
                 t.text = document.getElementById('editTodoText').value;
                 t.subtitle = document.getElementById('editTodoSubtitle').value;
