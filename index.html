@@ -135,6 +135,8 @@
             --btn-move-hover-bg: #4a90e2;
             --btn-move-hover-text: #fff;
 
+            --btn-delete-plan-hover-bg: rgba(245, 101, 101, 0.1);
+
             /* 日期选择器图标颜色变量（浅色模式） */
             --date-picker-icon-filter: none;
 
@@ -150,6 +152,7 @@
            下面只覆盖需要变化的变量，未列出的变量
            自动继承 :root 中的浅色默认值。
            ──────────────────────────────────────────────── */
+        /* === 深色模式覆盖 === */
         [data-theme="dark"] {
             --primary-gradient: #1A202C;
 
@@ -198,6 +201,8 @@
             --btn-move-text: #E2E8F0;
             --btn-move-hover-bg: #4299E1;
             --btn-move-hover-text: #fff;
+
+            --btn-delete-plan-hover-bg: rgba(245, 101, 101, 0.2);
 
             /* 日期选择器图标颜色变量（深色模式） */
             /* 说明：通过反色让日历图标在深色输入框里保持可见 */
@@ -1305,14 +1310,28 @@
             gap: 8px;
             margin-top: 5px;
             flex-wrap: wrap;
+            width: 100%;
         }
 
         .btn-plan-action {
-            font-size: 12px;
-            padding: 6px 10px;
+            min-height: 36px;
+            padding: 0;
             box-shadow: none;
             border: 1px solid var(--border-color);
-            flex: 1;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+
+        .btn-plan-action svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: block;
+            flex-shrink: 0;
         }
 
         .btn-to-footprint {
@@ -1333,6 +1352,16 @@
 
         .btn-to-todo:hover {
             background: var(--btn-review-bg);
+        }
+
+        .btn-delete-plan {
+            background: var(--bg-card);
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .btn-delete-plan:hover {
+            background: var(--btn-delete-plan-hover-bg);
         }
 
         .no-records {
@@ -3172,6 +3201,41 @@
             triggerSync();
         }
 
+        window.deletePlan = function (id) {
+            if (!confirm("确定要删除这条规划吗？")) return;
+            const idx = window.dailyPlans.findIndex(p => p.id === id);
+            if (idx === -1) return;
+            window.dailyPlans.splice(idx, 1);
+            updatePlanList();
+            triggerSync();
+        }
+
+        // 统一：今日规划操作按钮改为 SVG 图标，避免文字按钮占用过多空间。
+        function getPlanActionIcon(action) {
+            if (action === 'start') {
+                return `<svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 6L18 12L8 18V6Z"></path>
+                </svg>`;
+            }
+            if (action === 'todo') {
+                return `<svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 6H20"></path>
+                    <path d="M9 12H20"></path>
+                    <path d="M9 18H20"></path>
+                    <path d="M4 6H4.01"></path>
+                    <path d="M4 12H4.01"></path>
+                    <path d="M4 18H4.01"></path>
+                </svg>`;
+            }
+            return `<svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6H21"></path>
+                <path d="M8 6V4H16V6"></path>
+                <path d="M19 6L18 20H6L5 6"></path>
+                <path d="M10 11V17"></path>
+                <path d="M14 11V17"></path>
+            </svg>`;
+        }
+
         function updatePlanList() {
             const listEl = document.getElementById('planList');
             if (window.dailyPlans.length === 0) { listEl.innerHTML = '<div class="no-records">暂无规划</div>'; return; }
@@ -3194,9 +3258,14 @@
                         <span class="plan-deadline">今日截止</span>
                         ${!item.completed ? `
                         <div class="plan-actions">
-                            <button class="btn-plan-action btn-to-footprint" onclick="startFromPlan(${item.id})">开始执行</button>
-                            <button class="btn-plan-action btn-to-todo" onclick="convertPlanToTodo(${item.id})">转为待办</button>
-                        </div>` : ''}
+                            <button class="btn-plan-action btn-to-footprint" onclick="startFromPlan(${item.id})" title="开始执行" aria-label="开始执行">${getPlanActionIcon('start')}</button>
+                            <button class="btn-plan-action btn-to-todo" onclick="convertPlanToTodo(${item.id})" title="转为待办" aria-label="转为待办">${getPlanActionIcon('todo')}</button>
+                            <button class="btn-plan-action btn-delete-plan" onclick="deletePlan(${item.id})" title="删除" aria-label="删除">${getPlanActionIcon('delete')}</button>
+                        </div>` : `
+                        <div class="plan-actions">
+                            <span style="color: var(--success-color); flex: 1; text-align: center; display: inline-block; padding: 4px 0;">已完成</span>
+                            <button class="btn-plan-action btn-delete-plan" onclick="deletePlan(${item.id})" title="删除" aria-label="删除">${getPlanActionIcon('delete')}</button>
+                        </div>`}
                     </div>
                 </div>`;
             }).join('');
