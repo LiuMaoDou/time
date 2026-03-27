@@ -67,14 +67,34 @@ Sync guardrails:
 
 ### 5) AI assistant data flow
 
-1. Frontend sends `{ instruction, context, history }` to Supabase Edge Function `/functions/v1/ai-assistant`.
-2. Edge Function calls external OpenAI-compatible `/chat/completions` endpoint using secrets.
-3. Function returns either:
+1. Frontend calls `https://open.bigmodel.cn/api/coding/paas/v4/chat/completions` directly (model: `glm-5`, temperature: 0.2, response_format: json_object).
+2. API Key is stored in `localStorage` under key `bigmodel_api_key`; user is prompted on first use. Key is never hardcoded.
+3. LLM returns either:
    - `mode: "readonly"` (message only), or
    - `mode: "preview_patch"` (message + patch)
 4. Frontend only applies patch keys from a strict whitelist, then `refreshAllUI()` + `await triggerSync()`.
 
-### 6) Behavior coupling to preserve
+> Note: Supabase Edge Function (`supabase/functions/ai-assistant/index.ts`) still exists but is **not used by the frontend**. It was bypassed because Supabase's egress IPs are blocked by bigmodel. Do not route AI calls through it unless the IP restriction is resolved.
+
+### 6) AI patch whitelist
+
+The Edge Function and frontend enforce a strict whitelist for patch keys. Allowed keys:
+
+```
+records, todos, questions, dailyPlans,
+currentTask, currentTaskDescription, currentPlanId, currentTodoId,
+startTime, pausedTime, isPaused
+```
+
+Any keys outside this whitelist are silently ignored.
+
+### 7) Mobile responsive design
+
+- Desktop: four-column layout (今日足迹, 今日规划, 待办清单, 灵感洞察)
+- Mobile (<768px): single-panel view with swipe pagination
+- Pagination state (`mobilePagerState`) is UI-only, not persisted to cloud
+
+### 8) Behavior coupling to preserve
 
 - `finishToday()` exports Excel, then clears `records` + `dailyPlans` only (keeps `todos` + `questions`).
 - Completed todos are filtered out during load/import to prevent stale completed items reappearing.
