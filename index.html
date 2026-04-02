@@ -2942,6 +2942,45 @@
             return bubble;
         }
 
+        // 生成 AI patch 的数组长度，便于做变更提示和风险判断。
+        function getAiPatchListLength(key, value) {
+            if (key === 'todos') return normalizeTodos(value).length;
+            return ensureArray(value).length;
+        }
+
+        // 汇总 AI patch 的影响范围，避免静默修改全局数据。
+        function summarizeAiPatch(patch) {
+            const labels = {
+                records: '工作记录',
+                todos: '待办',
+                questions: '灵感洞察',
+                dailyPlans: '今日规划'
+            };
+            const lines = [];
+
+            Object.entries(labels).forEach(([key, label]) => {
+                if (!(key in patch)) return;
+                const currentLength = key === 'todos' ? normalizeTodos(window[key]).length : ensureArray(window[key]).length;
+                const nextLength = getAiPatchListLength(key, patch[key]);
+                const delta = nextLength - currentLength;
+                const deltaText = delta === 0 ? '无数量变化' : (delta > 0 ? `+${delta}` : `${delta}`);
+                lines.push(`${label}: ${currentLength} -> ${nextLength}（${deltaText}）`);
+            });
+
+            return lines;
+        }
+
+        // 检查 AI patch 是否存在明显的危险删除行为，防止误清空数据。
+        function isDestructiveAiPatch(patch) {
+            const listKeys = ['records', 'todos', 'questions', 'dailyPlans'];
+            return listKeys.some(key => {
+                if (!(key in patch)) return false;
+                const currentLength = key === 'todos' ? normalizeTodos(window[key]).length : ensureArray(window[key]).length;
+                const nextLength = getAiPatchListLength(key, patch[key]);
+                return currentLength > 0 && (nextLength === 0 || nextLength <= Math.floor(currentLength / 2));
+            });
+        }
+
         // 清空 AI 聊天
         // 功能：清空界面消息和上下文历史，回到初始状态
         window.clearAiChat = function () {
@@ -2960,9 +2999,8 @@
         }
 
         // 解析上游 AI 错误文本，提炼成更可读的中文提示。
-        function formatAiServiceError(status, text, endpoint) {
+        function formatAiServiceError(status, text) {
             let message = `AI 服务调用失败（${status}）`;
-            let errorId = '';
 
             try {
                 const parsed = JSON.parse(text);
@@ -2971,12 +3009,6 @@
                     if (typeof detail.message === 'string' && detail.message.trim()) {
                         message = detail.message.trim();
                     }
-                    if (typeof detail.id === 'string' && detail.id.trim()) {
-                        errorId = detail.id.trim();
-                    } else if (typeof detail.message === 'string') {
-                        const match = detail.message.match(/错误id[:：]\s*([a-zA-Z0-9_-]+)/);
-                        if (match) errorId = match[1];
-                    }
                 }
             } catch (_) {
                 if (typeof text === 'string' && text.trim()) {
@@ -2984,65 +3016,56 @@
                 }
             }
 
-            const endpointName = endpoint.includes('/api/coding/') ? 'Coding' : '标准';
-            const suffix = errorId ? `（错误ID：${errorId}）` : '';
-            return `${message}${suffix}；已尝试 ${endpointName} 通道。`;
+            return message;
         }
 
-        // 请求智谱接口，优先 Coding 通道，失败后回退到标准通道。
-        async function requestBigmodelWithFallback(apiKey, payload) {
-            const endpoints = [
-                'https://open.bigmodel.cn/api/coding/paas/v4/chat/completions',
-                'https://open.bigmodel.cn/api/paas/v4/chat/completions'
-            ];
-
+        // 请求 DeepSeek 接口，保留手工输入 API Key 的方式。
+        async function requestDeepseek(apiKey, payload) {
+            const endpoint = 'https://api.deepseek.com/chat/completions';
             let lastError = new Error('AI 服务暂时不可用，请稍后重试。');
 
-            for (const endpoint of endpoints) {
-                for (let attempt = 1; attempt <= 2; attempt++) {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 45000);
+            for (let attempt = 1; attempt <= 2; attempt++) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 45000);
 
-                    try {
-                        const response = await fetch(endpoint, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${apiKey.trim()}`
-                            },
-                            body: JSON.stringify(payload),
-                            signal: controller.signal
-                        });
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey.trim()}`
+                        },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
 
-                        clearTimeout(timeoutId);
+                    clearTimeout(timeoutId);
 
-                        if (response.ok) {
-                            return await response.json();
-                        }
-
-                        const text = await response.text();
-                        const error = new Error(formatAiServiceError(response.status, text, endpoint));
-                        const isRetryable = response.status >= 500 || response.status === 429;
-
-                        // 鉴权错误通常不是瞬时问题，直接中断，避免无意义重试。
-                        if (response.status === 401 || response.status === 403) {
-                            throw error;
-                        }
-
-                        lastError = error;
-                        if (!isRetryable || attempt === 2) break;
-                        await sleep(800 * attempt);
-                    } catch (error) {
-                        clearTimeout(timeoutId);
-
-                        const isTimeout = error && error.name === 'AbortError';
-                        const message = isTimeout ? 'AI 请求超时，请稍后重试。' : (error?.message || 'AI 网络请求失败，请稍后重试。');
-                        lastError = new Error(message);
-
-                        // 非超时类异常通常由 fetch 直接抛出，当前端点再试一次即可。
-                        if (attempt === 2) break;
-                        await sleep(800 * attempt);
+                    if (response.ok) {
+                        return await response.json();
                     }
+
+                    const text = await response.text();
+                    const error = new Error(formatAiServiceError(response.status, text));
+                    const isRetryable = response.status >= 500 || response.status === 429;
+
+                    // 鉴权错误通常不是瞬时问题，直接中断，避免无意义重试。
+                    if (response.status === 401 || response.status === 403) {
+                        throw error;
+                    }
+
+                    lastError = error;
+                    if (!isRetryable || attempt === 2) break;
+                    await sleep(800 * attempt);
+                } catch (error) {
+                    clearTimeout(timeoutId);
+
+                    const isTimeout = error && error.name === 'AbortError';
+                    const message = isTimeout ? 'AI 请求超时，请稍后重试。' : (error?.message || 'AI 网络请求失败，请稍后重试。');
+                    lastError = new Error(message);
+
+                    if (attempt === 2) break;
+                    await sleep(800 * attempt);
                 }
             }
 
@@ -3050,7 +3073,7 @@
         }
 
         // 发送 AI 消息（传统 chat 模式）
-        // 行为：用户发送 -> 优先走 bigmodel Coding 通道，失败后自动回退标准通道 -> AI 回复；若 AI 返回 patch，则自动应用并同步
+        // 行为：用户发送 -> 调用 DeepSeek -> AI 回复；若 AI 返回 patch，则自动应用并同步
         // 注意：Key 保存在 localStorage，不硬编码在代码里
         window.sendAiMessage = async function () {
             const input = document.getElementById('aiPromptInput');
@@ -3058,14 +3081,14 @@
             if (!input || !sendBtn) return;
 
             // 从 localStorage 读取 Key，首次使用时提示输入
-            let apiKey = localStorage.getItem('bigmodel_api_key');
+            let apiKey = localStorage.getItem('deepseek_api_key');
             if (!apiKey) {
-                apiKey = prompt('请输入智谱 bigmodel API Key（仅保存在本地浏览器中）:');
+                apiKey = prompt('请输入 DeepSeek API Key（仅保存在本地浏览器中）:');
                 if (!apiKey) {
                     alert('未配置 API Key，无法发送消息。');
                     return;
                 }
-                localStorage.setItem('bigmodel_api_key', apiKey.trim());
+                localStorage.setItem('deepseek_api_key', apiKey.trim());
             }
 
             const userPrompt = (input.value || '').trim();
@@ -3099,12 +3122,11 @@
                     }
                 ];
 
-                // 4. 直接调用 bigmodel，先试 Coding 通道，必要时自动回退标准通道。
-                const rawData = await requestBigmodelWithFallback(apiKey, {
-                    model: 'glm-5',
+                // 4. 调用 DeepSeek 接口，继续使用 JSON 约束输出，避免生成脏 patch。
+                const rawData = await requestDeepseek(apiKey, {
+                    model: 'deepseek-chat',
                     messages: messages,
-                    temperature: 0.2,
-                    response_format: { type: 'json_object' }
+                    temperature: 0.2
                 });
                 const contentText = rawData.choices?.[0]?.message?.content || '{}';
 
@@ -3131,6 +3153,21 @@
                 // 5. 如果返回 patch，自动应用并同步（不展示给用户）
                 if (data.mode === 'preview_patch' && data.patch && typeof data.patch === 'object') {
                     const patch = data.patch;
+                    const summaryLines = summarizeAiPatch(patch);
+                    const destructive = isDestructiveAiPatch(patch);
+                    const confirmText = [
+                        destructive ? 'AI 检测到这次修改可能删除较多数据，请谨慎确认。' : 'AI 生成了一份数据修改建议。',
+                        summaryLines.length ? summaryLines.join('\n') : '未识别到列表字段变化。',
+                        '是否应用这次修改？'
+                    ].join('\n\n');
+
+                    // 所有 AI patch 都需要用户确认，避免问答类请求被误判成数据写入。
+                    if (!confirm(confirmText)) {
+                        const cancelMsg = destructive ? '⚠️ 已拦截这次高风险 AI 修改，现有数据未变更。' : '已取消 AI 修改，现有数据未变更。';
+                        appendAiMessage('assistant', cancelMsg);
+                        aiChatHistory.push({ role: 'assistant', content: cancelMsg });
+                        return;
+                    }
 
                     // 白名单写入：只允许核心字段
                     if (Array.isArray(patch.records)) window.records = patch.records;
