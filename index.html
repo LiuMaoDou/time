@@ -2410,6 +2410,16 @@
             };
         }
 
+        // 统一把外部数据中的列表字段收敛为数组，避免云端脏数据导致 .map/.filter 报错。
+        function ensureArray(value) {
+            return Array.isArray(value) ? value : [];
+        }
+
+        // 待办列表额外过滤已完成项与异常元素，保证页面加载和导入流程稳定。
+        function normalizeTodos(value) {
+            return ensureArray(value).filter(t => t && typeof t === 'object' && !t.completed);
+        }
+
         // 获取本地日期字符串（YYYY-MM-DD）
         // 说明：避免 toISOString() 使用 UTC 导致本地凌晨时段日期偏移。
         function getLocalDateString(date = new Date()) {
@@ -2828,10 +2838,10 @@
         // 用途：将 records/todos/questions/dailyPlans 等数据发送给 AI 做分析与操作
         function collectAiContextData() {
             return {
-                records: window.records || [],
-                todos: window.todos || [],
-                questions: window.questions || [],
-                dailyPlans: window.dailyPlans || [],
+                records: ensureArray(window.records),
+                todos: ensureArray(window.todos),
+                questions: ensureArray(window.questions),
+                dailyPlans: ensureArray(window.dailyPlans),
                 currentTask: window.currentTask || null,
                 currentTaskDescription: window.currentTaskDescription || "",
                 currentPlanId: window.currentPlanId || null,
@@ -2992,7 +3002,7 @@
 
                     // 白名单写入：只允许核心字段
                     if (Array.isArray(patch.records)) window.records = patch.records;
-                    if (Array.isArray(patch.todos)) window.todos = patch.todos;
+                    if (Array.isArray(patch.todos)) window.todos = normalizeTodos(patch.todos);
                     if (Array.isArray(patch.questions)) window.questions = patch.questions;
                     if (Array.isArray(patch.dailyPlans)) window.dailyPlans = patch.dailyPlans;
                     if (typeof patch.currentTask === 'string' || patch.currentTask === null) window.currentTask = patch.currentTask;
@@ -3491,13 +3501,13 @@
                 const data = pendingImportData;
 
                 // 过滤掉已完成的待办任务，防止导入残留任务（关键修复点）
-                window.todos = (data.todos || []).filter(t => !t.completed);
+                window.todos = normalizeTodos(data.todos);
 
-                window.questions = data.questions || [];
-                window.dailyPlans = data.dailyPlans || [];
+                window.questions = ensureArray(data.questions);
+                window.dailyPlans = ensureArray(data.dailyPlans);
 
                 if (!clearRecords) {
-                    window.records = (data.records || []).map(r => {
+                    window.records = ensureArray(data.records).map(r => {
                         const d = new Date(r.timestamp);
                         return { ...r, timestamp: isNaN(d.getTime()) ? new Date() : d };
                     });
@@ -4061,10 +4071,10 @@
                 };
 
                 const fullData = {
-                    records: (window.records || []).map(r => ({ ...r, timestamp: safeDate(r.timestamp) })),
-                    todos: (window.todos || []).map(t => ({ ...t, createdAt: safeDate(t.createdAt) })),
-                    questions: (window.questions || []).map(q => ({ ...q, createdAt: safeDate(q.createdAt) })),
-                    dailyPlans: (window.dailyPlans || []).map(p => ({ ...p, createdAt: safeDate(p.createdAt) })),
+                    records: ensureArray(window.records).map(r => ({ ...r, timestamp: safeDate(r.timestamp) })),
+                    todos: normalizeTodos(window.todos).map(t => ({ ...t, createdAt: safeDate(t.createdAt) })),
+                    questions: ensureArray(window.questions).map(q => ({ ...q, createdAt: safeDate(q.createdAt) })),
+                    dailyPlans: ensureArray(window.dailyPlans).map(p => ({ ...p, createdAt: safeDate(p.createdAt) })),
                     currentTask: window.currentTask || null,
                     currentTaskDescription: window.currentTaskDescription || "",
                     currentPlanId: window.currentPlanId || null,
@@ -4111,16 +4121,16 @@
 
                 if (fetchedData) {
                     const data = fetchedData;
-                    window.records = (data.records || []).map(r => {
+                    window.records = ensureArray(data.records).map(r => {
                         const d = r.timestamp ? new Date(r.timestamp) : new Date();
                         return { ...r, timestamp: isNaN(d) ? new Date() : d };
                     });
 
                     // 过滤掉已完成的待办任务，防止刷新后残留（关键修复点）
-                    window.todos = (data.todos || []).filter(t => !t.completed);
+                    window.todos = normalizeTodos(data.todos);
 
-                    window.questions = data.questions || [];
-                    window.dailyPlans = data.dailyPlans || [];
+                    window.questions = ensureArray(data.questions);
+                    window.dailyPlans = ensureArray(data.dailyPlans);
                     window.currentTask = data.currentTask;
                     window.currentTaskDescription = data.currentTaskDescription || "";
                     window.currentPlanId = data.currentPlanId;

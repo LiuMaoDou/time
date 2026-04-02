@@ -155,10 +155,40 @@ serve(async (req) => {
         "pausedTime",
         "isPaused",
       ]);
+      const arrayKeys = new Set(["records", "todos", "questions", "dailyPlans"]);
 
       const filteredPatch: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(patch)) {
-        if (allowedKeys.has(key)) {
+        if (!allowedKeys.has(key)) {
+          continue;
+        }
+
+        // 对列表字段做数组校验，避免模型返回对象或字符串污染前端数据结构。
+        if (arrayKeys.has(key)) {
+          if (Array.isArray(value)) {
+            filteredPatch[key] = value;
+          }
+          continue;
+        }
+
+        // 对标量字段分别做最小类型校验，只透传前端可安全消费的值。
+        if (key === "currentTask" && (typeof value === "string" || value === null)) {
+          filteredPatch[key] = value;
+          continue;
+        }
+        if (key === "currentTaskDescription" && typeof value === "string") {
+          filteredPatch[key] = value;
+          continue;
+        }
+        if ((key === "currentPlanId" || key === "currentTodoId" || key === "startTime") && (typeof value === "number" || value === null)) {
+          filteredPatch[key] = value;
+          continue;
+        }
+        if (key === "pausedTime" && typeof value === "number") {
+          filteredPatch[key] = value;
+          continue;
+        }
+        if (key === "isPaused" && typeof value === "boolean") {
           filteredPatch[key] = value;
         }
       }
