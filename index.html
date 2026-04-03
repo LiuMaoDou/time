@@ -3891,6 +3891,14 @@
             }
         }
 
+        // 删除待办项
+        window.deleteTodo = function (id) {
+            if (!confirm('确定要删除这条待办吗？')) return;
+            window.todos = window.todos.filter(t => t.id !== id);
+            updateTodoList();
+            triggerSync();
+        }
+
         // 新增：切换分组折叠状态
         window.toggleTodoGroup = function (groupKey) {
             window.todoGroupStates[groupKey] = !window.todoGroupStates[groupKey];
@@ -3976,11 +3984,18 @@
                                     <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px; min-height: 20px;">
                                         ${dateDisplay ? `<div class="todo-deadline" style="margin-top: 0;">${dateDisplay}</div>` : '<span></span>'}
                                         
-                                        ${!t.completed ? `
-                                        <button class="btn-plan-action btn-to-footprint" 
-                                            style="flex: none; width: auto; padding: 4px 8px; font-size: 12px; margin-left: 8px;" 
-                                            onclick="event.stopPropagation(); startFromTodo(${t.id})">开始执行</button>
-                                        ` : ''}
+                                        <div style="display: flex; gap: 4px; margin-left: 8px; flex: none;">
+                                            ${!t.completed ? `
+                                            <button class="btn-plan-action btn-to-footprint"
+                                                style="min-width: 36px;"
+                                                title="开始执行" aria-label="开始执行"
+                                                onclick="event.stopPropagation(); startFromTodo(${t.id})">${getPlanActionIcon('start')}</button>
+                                            ` : ''}
+                                            <button class="btn-plan-action btn-delete-plan"
+                                                style="min-width: 36px;"
+                                                title="删除" aria-label="删除"
+                                                onclick="event.stopPropagation(); deleteTodo(${t.id})">${getPlanActionIcon('delete')}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
