@@ -2470,6 +2470,16 @@
             return [];
         }
 
+        // HTML 转义工具函数，防止 todo/plan 文字含特殊字符破坏 DOM 结构
+        function escapeHtml(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         // 获取本地日期字符串（YYYY-MM-DD）
         // 说明：避免 toISOString() 使用 UTC 导致本地凌晨时段日期偏移。
         function getLocalDateString(date = new Date()) {
@@ -3490,8 +3500,8 @@
         window.startFromTodo = function (id) {
             if (window.currentTask) { alert("当前已有任务，请先完成或暂停！"); return; }
 
-            // 找到任务索引
-            const index = window.todos.findIndex(t => t.id === id);
+            // 找到任务索引，用 String() 比较兼容数字/字符串两种 id 格式
+            const index = window.todos.findIndex(t => String(t.id) === String(id));
             if (index === -1) return;
 
             const todo = window.todos[index];
@@ -3868,7 +3878,8 @@
         // 原因：triggerSync() 是异步的，但没有等待完成就执行了删除，导致删除状态未同步
         // 解决：改为 async/await 模式，确保每一步都同步完成后再执行下一步
         async function toggleTodo(id) {
-            const t = window.todos.find(x => x.id === id);
+            // 用 String() 比较，兼容 id 为数字或字符串两种情况
+            const t = window.todos.find(x => String(x.id) === String(id));
             if (t) {
                 // 1. 先标记为已完成
                 t.completed = !t.completed;
@@ -3881,7 +3892,7 @@
                 if (t.completed) {
                     setTimeout(async () => {
                         // 从数组中移除已完成的任务
-                        window.todos = window.todos.filter(x => x.id !== id);
+                        window.todos = window.todos.filter(x => String(x.id) !== String(id));
                         updateTodoList();
 
                         // 等待删除操作保存到云端（关键修复点）
@@ -3894,7 +3905,7 @@
         // 删除待办项
         window.deleteTodo = function (id) {
             if (!confirm('确定要删除这条待办吗？')) return;
-            window.todos = window.todos.filter(t => t.id !== id);
+            window.todos = window.todos.filter(t => String(t.id) !== String(id));
             updateTodoList();
             triggerSync();
         }
@@ -3974,27 +3985,31 @@
                         // 判断是否已过期（截止日期早于今天且未完成）
                         const isOverdue = t.deadline && t.deadline < todayStr && !t.completed;
 
+                        // 把 id 转成字符串后放入单引号中传递，
+                        // 兼容浮点 id（Date.now()+Math.random()）和 NaN 等边界情况，
+                        // 避免与外层 HTML 属性双引号冲突
+                        const idStr = String(t.id);
                         return `
                         <div class="todo-item ${t.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}">
                             <div class="todo-header">
-                                <input type="checkbox" class="todo-checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo(${t.id})">
-                                <div class="todo-content" onclick="openTodoEditModal(${t.id})">
-                                    <div class="todo-text">${t.text}</div> ${t.subtitle ? `<div class="todo-subtitle">${t.subtitle}</div>` : ''}
-                                    
+                                <input type="checkbox" class="todo-checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo('${idStr}')">
+                                <div class="todo-content" onclick="openTodoEditModal('${idStr}')">
+                                    <div class="todo-text">${escapeHtml(t.text)}</div> ${t.subtitle ? `<div class="todo-subtitle">${escapeHtml(t.subtitle)}</div>` : ''}
+
                                     <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px; min-height: 20px;">
                                         ${dateDisplay ? `<div class="todo-deadline" style="margin-top: 0;">${dateDisplay}</div>` : '<span></span>'}
-                                        
+
                                         <div style="display: flex; gap: 4px; margin-left: 8px; flex: none;">
                                             ${!t.completed ? `
                                             <button class="btn-plan-action btn-to-footprint"
                                                 style="min-width: 36px;"
                                                 title="开始执行" aria-label="开始执行"
-                                                onclick="event.stopPropagation(); startFromTodo(${t.id})">${getPlanActionIcon('start')}</button>
+                                                onclick="event.stopPropagation(); startFromTodo('${idStr}')">${getPlanActionIcon('start')}</button>
                                             ` : ''}
                                             <button class="btn-plan-action btn-delete-plan"
                                                 style="min-width: 36px;"
                                                 title="删除" aria-label="删除"
-                                                onclick="event.stopPropagation(); deleteTodo(${t.id})">${getPlanActionIcon('delete')}</button>
+                                                onclick="event.stopPropagation(); deleteTodo('${idStr}')">${getPlanActionIcon('delete')}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -4009,8 +4024,9 @@
 
         function openTodoEditModal(id) {
             // 编辑弹窗使用独立状态，避免覆盖运行中的待办标记
+            // 用 String() 比较，兼容 id 为数字或字符串两种情况
             currentTodoEditId = id;
-            const t = window.todos.find(x => x.id === id);
+            const t = window.todos.find(x => String(x.id) === String(id));
             if (t) {
                 document.getElementById('editTodoText').value = t.text;
                 document.getElementById('editTodoSubtitle').value = t.subtitle || '';
@@ -4028,7 +4044,7 @@
         }
 
         function saveTodoEdit() {
-            const t = window.todos.find(x => x.id === currentTodoEditId);
+            const t = window.todos.find(x => String(x.id) === String(currentTodoEditId));
             if (t) {
                 t.text = document.getElementById('editTodoText').value;
                 t.subtitle = document.getElementById('editTodoSubtitle').value;
