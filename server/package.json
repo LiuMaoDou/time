@@ -1,0 +1,13 @@
+{
+  "name": "time-tracker-server",
+  "version": "1.0.0",
+  "description": "Time Tracker Cloud - 自建后端 API (SQLite)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.0.0",
+    "ws": "^8.18.0"
+  }
+}
