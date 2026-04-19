@@ -44,6 +44,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 新增：Inter（拉丁字体）+ LXGW WenKai Screen（霞鹜文楷屏幕版，中文显示字体） -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css" rel="stylesheet">
 
     <!-- XLSX.js: 用于「今日结束」时将工作记录导出为 Excel 文件 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -2003,6 +2006,710 @@
             .mobile-module-nav {
                 display: none;
             }
+        }
+
+        /* ============================================================
+           UI 改版：冷静专业的 Linear/Notion 风格
+           暖米白 + 墨黑 + 赭红强调色；霞鹜文楷中文显示字体
+           通过 CSS 覆盖重写令牌与关键样式，尽量不动结构与 JS
+           ============================================================ */
+        :root {
+            --ink-0: #FBF7EF;
+            --ink-50: #F4EFE6;
+            --ink-100: #EDE6D8;
+            --ink-200: #E5DDD0;
+            --ink-300: #CFC6B6;
+            --ink-500: #8A837B;
+            --ink-700: #4A4742;
+            --ink-900: #1C1917;
+            --accent: #9C3D2E;
+            --accent-soft: #F0DBD3;
+            --accent-ink: #6F2A20;
+
+            --primary-gradient: none;
+            --primary-color: var(--ink-900);
+            --secondary-color: var(--accent);
+            --success-color: #3F6B4E;
+            --danger-color: #9C3D2E;
+            --warning-color: #A4691C;
+            --plan-color: var(--ink-900);
+
+            --text-main: var(--ink-900);
+            --text-sub: var(--ink-500);
+            --border-color: var(--ink-200);
+
+            --bg-container: var(--ink-0);
+            --bg-card: var(--ink-0);
+            --bg-section: var(--ink-50);
+            --bg-input: var(--ink-0);
+            --bg-hover: var(--ink-50);
+            --bg-sub-area: var(--ink-50);
+
+            /* 按钮色统一：全部改为幽灵按钮（墨线稿），特定按钮用强调色 */
+            --btn-finish-bg: var(--ink-0);
+            --btn-finish-text: var(--accent);
+            --btn-finish-border: var(--ink-200);
+            --btn-finish-hover: var(--accent-soft);
+
+            --btn-review-bg: var(--ink-0);
+            --btn-review-text: var(--ink-900);
+            --btn-review-border: var(--ink-200);
+            --btn-review-hover: var(--ink-50);
+
+            --btn-data-bg: var(--ink-0);
+            --btn-data-text: var(--ink-700);
+            --btn-data-border: var(--ink-200);
+            --btn-data-hover: var(--ink-50);
+
+            --btn-theme-bg: var(--ink-0);
+            --btn-theme-text: var(--ink-700);
+            --btn-theme-border: var(--ink-200);
+            --btn-theme-hover: var(--ink-50);
+
+            --btn-flomo-bg: var(--ink-0);
+            --btn-flomo-hover: var(--ink-50);
+
+            --checkbox-bg: var(--ink-0);
+            --checkbox-border: var(--ink-300);
+
+            --btn-move-bg: var(--ink-50);
+            --btn-move-text: var(--ink-700);
+            --btn-move-hover-bg: var(--ink-900);
+            --btn-move-hover-text: var(--ink-0);
+
+            --btn-delete-plan-hover-bg: rgba(156, 61, 46, 0.08);
+
+            --date-picker-icon-filter: grayscale(1) contrast(0.6) opacity(0.6);
+
+            --shadow-sm: 0 1px 0 rgba(28, 25, 23, 0.04);
+            --shadow-md: 0 2px 8px -4px rgba(28, 25, 23, 0.12);
+            --radius-md: 8px;
+            --radius-sm: 6px;
+        }
+
+        [data-theme="dark"] {
+            --ink-0: #23211E;
+            --ink-50: #1A1917;
+            --ink-100: #2A2824;
+            --ink-200: #3A3731;
+            --ink-300: #4F4A42;
+            --ink-500: #9E978D;
+            --ink-700: #CFC6B6;
+            --ink-900: #F1EADF;
+            --accent: #D97A66;
+            --accent-soft: rgba(217, 122, 102, 0.15);
+            --accent-ink: #E89884;
+
+            --primary-gradient: none;
+            --primary-color: var(--ink-900);
+            --secondary-color: var(--accent);
+            --plan-color: var(--ink-900);
+
+            --text-main: var(--ink-900);
+            --text-sub: var(--ink-500);
+            --border-color: var(--ink-200);
+
+            --bg-container: var(--ink-50);
+            --bg-card: var(--ink-0);
+            --bg-section: var(--ink-100);
+            --bg-input: var(--ink-0);
+            --bg-hover: var(--ink-100);
+            --bg-sub-area: var(--ink-100);
+
+            --btn-finish-bg: var(--ink-0);
+            --btn-finish-text: var(--accent);
+            --btn-finish-border: var(--ink-200);
+            --btn-finish-hover: var(--accent-soft);
+            --btn-review-bg: var(--ink-0);
+            --btn-review-text: var(--ink-900);
+            --btn-review-border: var(--ink-200);
+            --btn-review-hover: var(--ink-100);
+            --btn-data-bg: var(--ink-0);
+            --btn-data-text: var(--ink-700);
+            --btn-data-border: var(--ink-200);
+            --btn-data-hover: var(--ink-100);
+            --btn-theme-bg: var(--ink-0);
+            --btn-theme-text: var(--ink-700);
+            --btn-theme-border: var(--ink-200);
+            --btn-theme-hover: var(--ink-100);
+            --btn-flomo-bg: var(--ink-0);
+            --btn-flomo-hover: var(--ink-100);
+
+            --date-picker-icon-filter: grayscale(1) invert(0.85);
+
+            --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 2px 8px -4px rgba(0, 0, 0, 0.45);
+        }
+
+        /* === 全局 === */
+        body {
+            font-family: 'Inter', 'LXGW WenKai Screen', 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif;
+            background: var(--ink-50);
+            padding: 32px 20px;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--ink-200);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--ink-300);
+        }
+
+        /* 禁用全局 transition 带来的色彩拖影 */
+        * {
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        /* === 主容器：去毛玻璃，去阴影，只留细线 === */
+        .container {
+            max-width: 1480px;
+            background: transparent;
+            backdrop-filter: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 24px 8px;
+            border: none;
+        }
+
+        /* === h1：去 emoji / 去渐变 / 换字体 === */
+        h1 {
+            font-family: 'LXGW WenKai Screen', 'Inter', serif;
+            background: none;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: currentColor;
+            color: var(--text-main);
+            text-shadow: none;
+            font-weight: 500;
+            font-size: 1.9rem;
+            text-align: left;
+            margin: 0 0 28px 2px;
+            letter-spacing: 0.02em;
+            font-size: 0; /* 隐藏原始 emoji 文本 */
+            line-height: 1.2;
+        }
+        h1::before {
+            content: "奇特的一生";
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        h1::after {
+            content: "吾生有涯，不负韶华 · 记录每一寸时间";
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-sub);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0;
+        }
+        [data-theme="dark"] h1 {
+            color: var(--text-main);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            text-shadow: none;
+        }
+
+        /* === 顶部工具栏：统一为幽灵按钮，一条薄横栏 === */
+        .file-controls {
+            background: var(--ink-0);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            gap: 6px;
+            box-shadow: none;
+            margin-bottom: 24px;
+        }
+
+        .file-controls label,
+        .file-controls button {
+            padding: 7px 12px !important;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            box-shadow: none !important;
+            border: 1px solid var(--ink-200) !important;
+            background: var(--ink-0) !important;
+            color: var(--ink-700) !important;
+            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+            gap: 6px !important;
+            filter: none !important;
+        }
+        .file-controls label:hover,
+        .file-controls button:hover {
+            background: var(--ink-50) !important;
+            color: var(--ink-900) !important;
+            transform: none !important;
+            border-color: var(--ink-300) !important;
+            filter: none !important;
+        }
+        .file-controls .btn-icon,
+        .file-controls .icon-lucide {
+            width: 14px !important;
+            height: 14px !important;
+        }
+        .btn-theme {
+            min-width: auto !important;
+            margin-right: 0 !important;
+        }
+
+        /* 今日结束 = 赭红强调，作为工具栏唯一彩色按钮 */
+        .btn-finish {
+            color: var(--accent) !important;
+            border-color: var(--accent-soft) !important;
+        }
+        .btn-finish:hover {
+            background: var(--accent-soft) !important;
+            color: var(--accent-ink) !important;
+            border-color: var(--accent-soft) !important;
+        }
+        /* 今日复盘分组：向右推 */
+        .btn-daily-review {
+            margin-left: auto !important;
+        }
+
+        .clock-display {
+            font-family: 'Inter', 'SF Mono', ui-monospace, monospace;
+            font-size: 14px;
+            font-weight: 500;
+            background: transparent;
+            box-shadow: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            height: 34px;
+            margin-left: 8px;
+            letter-spacing: 0.08em;
+            font-variant-numeric: tabular-nums;
+        }
+        .auto-save-status {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-sub);
+            margin-left: 10px;
+        }
+        .save-indicator {
+            box-shadow: none;
+            background: var(--success-color);
+        }
+
+        /* === 主布局：四列等权 === */
+        .main-layout {
+            gap: 16px;
+        }
+
+        /* === 卡片区域：扁平，细线 === */
+        .records,
+        .todo-section,
+        .question-section,
+        .plan-section {
+            background: var(--ink-0);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: none;
+            padding: 18px;
+        }
+
+        .section-title {
+            font-family: 'LXGW WenKai Screen', 'Inter', serif;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            color: var(--text-main);
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title > span {
+            font-weight: 600 !important;
+        }
+        .section-title .icon-lucide,
+        .section-title svg {
+            color: var(--text-sub);
+            width: 14px !important;
+            height: 14px !important;
+        }
+
+        /* 新增按钮：圆形改方形，去渐变 */
+        .btn-add-icon {
+            width: 22px !important;
+            height: 22px !important;
+            border-radius: 4px !important;
+            font-size: 16px !important;
+            line-height: 1 !important;
+            background: transparent !important;
+            color: var(--text-sub) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: none !important;
+            margin-left: auto;
+            transition: background 0.15s, color 0.15s, border-color 0.15s !important;
+            transform: none !important;
+        }
+        .btn-add-icon:hover {
+            background: var(--ink-50) !important;
+            color: var(--accent) !important;
+            border-color: var(--accent-soft) !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        .btn-add-icon:active {
+            transform: none !important;
+        }
+        [data-theme="dark"] .btn-add-icon {
+            background: transparent !important;
+            border-color: var(--border-color) !important;
+        }
+        [data-theme="dark"] .btn-add-icon:hover {
+            background: var(--ink-100) !important;
+            color: var(--accent) !important;
+            border-color: var(--accent-soft) !important;
+        }
+
+        /* === 记录/待办/规划/灵感 卡片：去阴影、去悬浮位移 === */
+        .record-item,
+        .todo-item,
+        .plan-item,
+        .question-item {
+            background: var(--ink-50);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            box-shadow: none;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+        }
+        .record-item:hover,
+        .todo-item:hover,
+        .plan-item:hover,
+        .question-item:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--ink-300);
+            background: var(--ink-0);
+        }
+        .question-item.answered {
+            border-left: 2px solid var(--success-color);
+        }
+        .todo-item.overdue {
+            border-left: 2px solid var(--accent);
+        }
+        [data-theme="dark"] .record-item,
+        [data-theme="dark"] .todo-item,
+        [data-theme="dark"] .plan-item,
+        [data-theme="dark"] .question-item {
+            background: var(--ink-50);
+        }
+
+        .no-records {
+            color: var(--text-sub);
+            font-size: 13px;
+            padding: 24px 0;
+            font-family: 'LXGW WenKai Screen', serif;
+            font-style: normal;
+            letter-spacing: 0.05em;
+        }
+
+        /* === 任务输入区 === */
+        .task-input-section input[type="text"] {
+            border-radius: var(--radius-sm);
+            border-color: var(--border-color);
+            background: var(--ink-50);
+            font-size: 14px;
+            padding: 10px 12px;
+        }
+        .task-input-section input[type="text"]:focus {
+            background: var(--ink-0);
+            border-color: var(--ink-900);
+            box-shadow: 0 0 0 3px var(--ink-100);
+        }
+
+        /* 任务控制按钮：墨线稿风，开始=填色强调，暂停/完成=幽灵 */
+        .btn-start,
+        .btn-pause,
+        .btn-stop {
+            height: 38px !important;
+            border-radius: var(--radius-sm) !important;
+            box-shadow: none !important;
+            border: 1px solid var(--ink-200) !important;
+        }
+        .btn-start {
+            background: var(--accent-soft) !important;
+            color: var(--accent) !important;
+            border-color: var(--accent-soft) !important;
+        }
+        .btn-start:hover {
+            filter: none !important;
+            background: var(--accent) !important;
+            color: var(--ink-0) !important;
+            border-color: var(--accent) !important;
+            transform: none !important;
+        }
+        .btn-start svg path { fill: var(--accent) !important; }
+        .btn-start:hover svg path { fill: var(--ink-0) !important; }
+        .btn-pause,
+        .btn-stop {
+            background: var(--ink-0) !important;
+            border: 1px solid var(--ink-200) !important;
+        }
+        .btn-pause svg path,
+        .btn-stop svg path {
+            fill: var(--ink-700) !important;
+        }
+        .btn-pause:hover,
+        .btn-stop:hover {
+            background: var(--ink-50) !important;
+            border-color: var(--ink-300) !important;
+            transform: none !important;
+        }
+        [data-theme="dark"] .btn-start {
+            background: var(--accent-soft) !important;
+            color: var(--accent) !important;
+            border-color: transparent !important;
+        }
+        [data-theme="dark"] .btn-start svg path { fill: var(--accent) !important; }
+        [data-theme="dark"] .btn-start:hover {
+            background: var(--accent) !important;
+            color: var(--ink-50) !important;
+        }
+        [data-theme="dark"] .btn-start:hover svg path { fill: var(--ink-50) !important; }
+
+        /* === 当前任务 / 计时器：更有存在感 === */
+        .current-task {
+            background: var(--ink-50);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            box-shadow: none;
+        }
+        .current-task h2 {
+            font-size: 11px !important;
+            font-weight: 500;
+            color: var(--text-sub);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-family: 'Inter', sans-serif;
+        }
+        .timer {
+            font-family: 'Inter', ui-monospace, 'SF Mono', monospace;
+            font-size: 40px !important;
+            font-weight: 300 !important;
+            color: var(--text-main);
+            letter-spacing: 0.02em;
+            font-variant-numeric: tabular-nums;
+            margin: 8px 0 !important;
+        }
+
+        /* === 输入框统一 === */
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            border-radius: var(--radius-sm);
+            border-color: var(--border-color);
+            font-size: 14px;
+            padding: 10px 12px;
+            background: var(--ink-0);
+            font-family: inherit;
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            border-color: var(--ink-900);
+            box-shadow: 0 0 0 3px var(--ink-100);
+        }
+
+        /* === 弹窗：细线 + 少阴影 === */
+        .modal-content {
+            background-color: var(--ink-0);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: 0 16px 48px -16px rgba(28, 25, 23, 0.25);
+        }
+        .modal-header h2 {
+            font-family: 'LXGW WenKai Screen', serif;
+            font-size: 17px !important;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+
+        /* 模态按钮去色块 */
+        .btn-save-modal,
+        .btn-add-plan,
+        .btn-add-todo,
+        .btn-add-question {
+            background: var(--ink-0) !important;
+            border: 1px solid var(--ink-200) !important;
+            color: var(--ink-700) !important;
+            box-shadow: none !important;
+            font-weight: 500 !important;
+        }
+        .btn-save-modal:hover,
+        .btn-add-plan:hover,
+        .btn-add-todo:hover,
+        .btn-add-question:hover {
+            background: var(--ink-50) !important;
+            color: var(--ink-900) !important;
+            border-color: var(--ink-300) !important;
+            transform: none !important;
+            filter: none !important;
+        }
+        /* 模态里"主操作"按钮用填色 */
+        .btn-add-plan,
+        .btn-add-todo,
+        .btn-add-question {
+            background: var(--ink-900) !important;
+            color: var(--ink-0) !important;
+            border-color: var(--ink-900) !important;
+        }
+        .btn-add-plan:hover,
+        .btn-add-todo:hover,
+        .btn-add-question:hover {
+            background: #000 !important;
+            color: var(--ink-0) !important;
+            border-color: #000 !important;
+        }
+        [data-theme="dark"] .btn-add-plan,
+        [data-theme="dark"] .btn-add-todo,
+        [data-theme="dark"] .btn-add-question {
+            background: var(--ink-900) !important;
+            color: var(--ink-50) !important;
+            border-color: var(--ink-900) !important;
+        }
+
+        /* Flomo 按钮 */
+        .btn-flomo,
+        .btn-small {
+            background: var(--ink-0) !important;
+            border: 1px solid var(--ink-200) !important;
+            color: var(--ink-700) !important;
+            box-shadow: none !important;
+            font-weight: 500 !important;
+        }
+        .btn-flomo:hover,
+        .btn-small:hover {
+            background: var(--ink-50) !important;
+            border-color: var(--ink-300) !important;
+            color: var(--ink-900) !important;
+            filter: none !important;
+            transform: none !important;
+        }
+
+        /* 移动端导航圆点 */
+        .mobile-module-dot {
+            background: var(--ink-200) !important;
+        }
+        .mobile-module-dot.active {
+            background: var(--ink-900) !important;
+        }
+        .mobile-nav-btn {
+            background: var(--ink-0) !important;
+            border: 1px solid var(--ink-200) !important;
+            color: var(--ink-700) !important;
+        }
+
+        /* 打卡按钮内部强调色 */
+        .checkin-item-btn {
+            border-color: var(--ink-900) !important;
+            color: var(--ink-900) !important;
+        }
+        .checkin-item-btn:hover {
+            background: var(--ink-900) !important;
+            color: var(--ink-0) !important;
+        }
+
+        /* 加载遮罩 */
+        #loadingOverlay {
+            background: var(--ink-50) !important;
+        }
+        .loading-text {
+            color: var(--text-sub);
+            font-family: 'LXGW WenKai Screen', serif;
+        }
+
+        /* 选中/滚动条等细节 */
+        ::selection {
+            background: var(--accent-soft);
+            color: var(--accent-ink);
+        }
+
+        /* 深色模式下加载遮罩 */
+        [data-theme="dark"] #loadingOverlay {
+            background: var(--ink-50) !important;
+        }
+        [data-theme="dark"] body {
+            background: var(--ink-50);
+        }
+
+        /* 今日规划 · 截止标签：与待办清单日期 (.todo-deadline) 完全一致
+           两个元素 light / dark 下都使用同一组样式（原 .todo-deadline 没有暗色覆盖） */
+        .plan-deadline,
+        .todo-deadline {
+            font-size: 12px !important;
+            color: var(--warning-color) !important;
+            background: rgba(237, 137, 54, 0.1) !important;
+            border: none !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0;
+            display: inline-block !important;
+        }
+
+        /* 今日规划 · 内容文字：暖琥珀色，呼应米白纸质，区分于其他模块 */
+        #planList .plan-main .plan-content,
+        #todoList .todo-content .todo-text,
+        #questionList .question-content .question-text,
+        #recordsList .record-item .record-task {
+            color: rgb(165, 105, 28) !important;
+            font-weight: 500 !important;
+        }
+        [data-theme="dark"] #planList .plan-main .plan-content,
+        [data-theme="dark"] #todoList .todo-content .todo-text,
+        [data-theme="dark"] #questionList .question-content .question-text,
+        [data-theme="dark"] #recordsList .record-item .record-task {
+            color: #D4A056 !important;
+        }
+
+        /* 灵感洞察有答复后不要绿色左边框，与待办风格一致 */
+        .question-item.answered {
+            border-left: 1px solid var(--border-color) !important;
+        }
+
+        /* 洞察方案内容样式：参照待办清单的 .todo-subtitle */
+        .question-answer {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 4px;
+            white-space: pre-wrap;
+            border-left: none;
+            padding-left: 0;
+        }
+
+        /* 待办分组标题（项目文件夹）：退后一层，不抢眼 */
+        .todo-group-title {
+            color: var(--text-sub) !important;
+            font-weight: 500 !important;
+            font-size: 12px !important;
+            letter-spacing: 0.04em;
+            opacity: 1 !important;
+        }
+        .todo-group-title:hover {
+            color: var(--text-main) !important;
+        }
+        .todo-group-title .group-icon,
+        .todo-group-title .collapse-icon {
+            color: var(--text-sub) !important;
+            opacity: 0.7;
+        }
+        [data-theme="dark"] .todo-group-title {
+            color: var(--text-sub) !important;
+        }
+        [data-theme="dark"] .todo-group-title:hover {
+            color: var(--text-main) !important;
         }
     </style>
 </head>
@@ -4344,7 +5051,7 @@
                 <div class="question-item ${q.answered ? 'answered' : ''}">
                     <div class="question-content" onclick="openAnswerModal(${q.id})">
                         <div class="question-text">${q.question}</div>
-                        ${q.answered && q.answer ? `<div class="question-answer" style="margin-top: 8px; font-size: 13px; color: var(--text-sub); border-left: 2px solid var(--primary-color); padding-left: 8px; white-space: pre-wrap;">${q.answer}</div>` : ''}
+                        ${q.answered && q.answer ? `<div class="question-answer">${q.answer}</div>` : ''}
                     </div>
                     <div class="question-actions">
                         <button class="btn-small btn-flomo" onclick="sendToFlomo(event, ${q.id})">Flomo</button>
