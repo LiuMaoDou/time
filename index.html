@@ -585,7 +585,7 @@
             color: var(--text-primary);
         }
         .checkin-item-count {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-sub);
             min-width: 40px;
             text-align: center;
@@ -647,7 +647,7 @@
         .checkin-empty {
             text-align: center;
             color: var(--text-sub);
-            font-size: 13px;
+            font-size: 14px;
             padding: 20px 0;
         }
 
@@ -838,7 +838,7 @@
             color: var(--danger-color);
             border: 1px solid rgba(245, 101, 101, 0.2);
             padding: 6px 12px;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .btn-delete:hover {
@@ -852,7 +852,7 @@
             color: var(--success-color);
             border: 1px solid rgba(72, 187, 120, 0.2);
             padding: 6px 12px;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .btn-flomo:hover {
@@ -922,7 +922,7 @@
 
         .ai-chat-empty {
             color: var(--text-sub);
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
             padding: 24px 8px;
             line-height: 1.6;
@@ -1002,7 +1002,7 @@
 
         .btn-small {
             padding: 6px 12px;
-            font-size: 13px;
+            font-size: 14px;
             gap: 6px;
         }
 
@@ -1368,7 +1368,7 @@
         }
 
         .todo-subtitle {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-sub);
             margin-top: 4px;
             white-space: nowrap;
@@ -1388,7 +1388,7 @@
         }
 
         .todo-group-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--primary-color);
             margin: 16px 0 8px 0;
@@ -1765,7 +1765,7 @@
 
         .project-combobox-empty {
             padding: 12px 14px;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-sub);
             font-style: italic;
             text-align: center;
@@ -1964,7 +1964,7 @@
             .mobile-nav-btn {
                 padding: 8px 12px;
                 min-width: 72px;
-                font-size: 13px;
+                font-size: 14px;
                 font-weight: 600;
                 border: 1px solid var(--border-color);
                 background: var(--bg-section);
@@ -2200,7 +2200,7 @@
             content: "吾生有涯，不负韶华 · 记录每一寸时间";
             display: block;
             margin-top: 6px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 400;
             color: var(--text-sub);
             font-family: 'Inter', sans-serif;
@@ -2227,7 +2227,7 @@
         .file-controls label,
         .file-controls button {
             padding: 7px 12px !important;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             border-radius: var(--radius-sm);
             box-shadow: none !important;
@@ -2407,7 +2407,7 @@
 
         .no-records {
             color: var(--text-sub);
-            font-size: 13px;
+            font-size: 14px;
             padding: 24px 0;
             font-family: 'LXGW WenKai Screen', serif;
             font-style: normal;
@@ -2671,7 +2671,7 @@
         [data-theme="dark"] #todoList .todo-content .todo-text,
         [data-theme="dark"] #questionList .question-content .question-text,
         [data-theme="dark"] #recordsList .record-item .record-task {
-            color: #D4A056 !important;
+            color: var(--text-main) !important;
         }
 
         /* 灵感洞察有答复后不要绿色左边框，与待办风格一致 */
@@ -2681,7 +2681,7 @@
 
         /* 洞察方案内容样式：参照待办清单的 .todo-subtitle */
         .question-answer {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-sub);
             margin-top: 4px;
             white-space: pre-wrap;
@@ -3091,7 +3091,7 @@
             </div>
             <div class="modal-body" style="padding:16px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                    <span style="font-size:13px;font-weight:600;color:var(--text-primary);">打卡项目</span>
+                    <span style="font-size: 14px;font-weight:600;color:var(--text-primary);">打卡项目</span>
                     <button class="btn-save-modal" style="font-size:12px;padding:4px 12px;background:var(--primary-color);color:#fff;" onclick="addCheckinItem()">+ 新增项目</button>
                 </div>
                 <div id="checkinList"></div>
@@ -4370,7 +4370,7 @@
                     <div class="plan-main">
                         <div onclick="openPlanDescModal(${item.id})" style="cursor: pointer;">
                             <span class="plan-content">${item.content}</span>
-                            ${item.description ? `<div style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">${item.description}</div>` : ''}
+                            ${item.description ? `<div style="font-size: 14px; color: var(--text-sub); margin-top: 4px;">${item.description}</div>` : ''}
                         </div>
                         <span class="plan-deadline">今日截止</span>
                         ${!item.completed ? `
